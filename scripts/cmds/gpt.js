@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // config 
-const apiKey = "";
+const apiKey = "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";
 const maxTokens = 500;
 const numberGenerateImage = 4;
 const maxStorageMessage = 4;
@@ -16,11 +16,15 @@ const { openAIUsing, openAIHistory } = global.temp;
 module.exports = {
 	config: {
 		name: "gpt",
-		version: "1.4",
+		version: "1.3",
 		author: "NTKhang",
 		countDown: 5,
 		role: 0,
-		description: {
+		shortDescription: {
+			vi: "GPT chat",
+			en: "GPT chat"
+		},
+		longDescription: {
 			vi: "GPT chat",
 			en: "GPT chat"
 		},
