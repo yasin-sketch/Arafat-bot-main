@@ -1,7 +1,7 @@
 {
   "facebookAccount": {
-    "email": "sisirsarkar5604@gmail.com",
-    "password": "sisir55773",
+    "email": "",
+    "password": "",
     "2FASecret": "",
     "i_user": "",
     "proxy": null,
@@ -17,16 +17,16 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "100079908017635",
+    "100081894480123",
     "",
-    "100072881080249"
+    ""
   ],
   "whiteListMode": {
     "enable": false,
-    "whiteListIds": [],
+    "whiteListIds": ["100081894480123"],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "𝔅𝔞𝔫𝔨𝔞𝔦 𝔟𝔬𝔱 ",
+  "nickNameBot": " ASH BORN ",
   "prefix": "-",
   "database": {
     "type": "sqlite",
