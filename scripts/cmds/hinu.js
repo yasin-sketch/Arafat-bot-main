@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
   config: {
-    name: 'hinu',
+    name: 'chat',
     aliases: ["sim"],
     version: '1.2',
     author: 'Samir Œ',
@@ -31,9 +31,9 @@ module.exports = {
       error: 'Simsimi đang bận, bạn hãy thử lại sau'
     },
     en: {
-      turnedOn: 'Turned on sam successfully!',
-      turnedOff: 'Turned off sam successfully!',
-      chatting: 'Already Chatting with sam...',
+      turnedOn: 'Turned on chat successfully!',
+      turnedOff: 'Turned off chat successfully!',
+      chatting: 'Already Chatting with me...',
       error: 'What?🙂'
     }
   },
