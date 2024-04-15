@@ -1,4 +1,4 @@
-/cmd install imaginex.js const axios = require('axios');
+const axios = require('axios');
 const badWords = ["sex","hentai","pussy","dick","xxx","porn","nude","sexy","🍑","🔞","👅","🫦","💋","🔥","🤒","🥵","🤭","puti","lado","ass","fuck","suck","puti","dickless","kera","banana","🍌","hot","yuri","🥒","🩸","🤤","cucumber","🖕"];
 
 module.exports = {
