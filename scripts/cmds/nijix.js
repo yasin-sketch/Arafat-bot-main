@@ -1,4 +1,4 @@
- const axios = require("axios");
+const axios = require("axios");
 const { getStreamFromURL } = global.utils;
 
 module.exports = {
@@ -40,9 +40,9 @@ module.exports = {
             }
 
             
-            let apiUrl = https://project-niji.onrender.com/api/v1/generate?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=rehat;
+            let apiUrl = `https://project-niji.onrender.com/api/v1/generate?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=rehat`;
             if (imageUrl) {
-                apiUrl += &imageUrl=${imageUrl};
+                apiUrl += `&imageUrl=${imageUrl}`;
             }
 
             const processingMessage = await message.reply("Please wait...⏳");
