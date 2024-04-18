@@ -1,80 +1,43 @@
-const axios = require("axios");
-const path = require("path");
-const fs = require("fs-extra");
+const axios = require('axios');
 
 module.exports = {
-  config: {
-    name: "pexels",
-    aliases: ["px"],
-    version: "1.0",
-    author: "rehat-- & ArYAN",//API by Aryan Chauhan
-    role: 0,
-    countDown: 0,
-    longDescription: {
-      en: "This command allows you to search for images on Pexels based on a given query and fetch a specified number of images."
+    config: {
+        name: "pexels",
+        aliases: ['px'],
+        author: "+Hassan",
+        version: "1.0",
+        shortDescription: "Search for images using Pexels API",
+        longDescription: "Search for high-quality images using Pexels API and return a specified number of results.",
+        category: "utility",
+        guide: {
+            vi: "",
+            en: ""
+        }
     },
-    category: "media",
-    guide: {
-      en: "{pn} <search query> <number of images>\nExample: {pn} tomozaki -5"
+
+    onStart: async function ({ args, message, getLang }) {
+        try {
+            const query = args.join(' ');
+            const numResults = parseInt(args[0]) || 8; // Default to 8 if no number is provided
+            const apiKey = 'NoL8ytYlwsYIqmkLBboshW909HzoBoBnGZJbpmwAcahp5PF9TAnr9p7Z';
+            const url = `https://api.pexels.com/v1/search?query=${query}&per_page=${numResults}`;
+
+            const headers = {
+                'Authorization': apiKey
+            };
+
+            message.reply('⏳Please wait...');
+
+            const { data } = await axios.get(url, { headers });
+
+            const results = data.photos.map(photo => photo.src.original);
+
+            const attachments = await Promise.all(results.map(url => global.utils.getStreamFromURL(url)));
+
+            return message.reply({ body: `✅𝘛𝘏𝘌𝘙𝘌 𝘐𝘚 𝘛𝘏𝘌 𝘗𝘌𝘟𝘌𝘓𝘚 𝘙𝘌𝘚𝘜𝘓𝘛𝘚 𝘍𝘖𝘙 𝘗𝘙𝘖𝘝𝘐𝘋𝘌𝘋 𝑷𝑹𝑶𝑴𝑷𝑻"${query}" 𝑭𝒓𝒐𝒎 𝑷𝒆𝒙𝒆𝒍𝒔:`, attachment: attachments });
+        } catch (error) {
+            console.error(error);
+            return message.reply("Sorry, I couldn't find any results.");
+        }
     }
-  },
-
-  onStart: async function ({ api, event, args }) {
-    try {
-      const keySearch = args.join(" ");
-      if (!keySearch.includes("-")) {
-        return api.sendMessage(
-          "Please enter the search query and number of images.",
-          event.threadID,
-          event.messageID
-        );
-      }
-      const keySearchs = keySearch.substr(0, keySearch.indexOf('-'));
-      let numberSearch = parseInt(keySearch.split("-").pop()) || 9;
-
-      const apiUrl = `https://ai-technology.onrender.com/api/pexels?query=${encodeURIComponent(
-        keySearchs
-      )}&keysearch=${numberSearch}`;
-    
-      const startTime = new Date().getTime(); // Define startTime
-    
-
-    api.setMessageReaction("⏳", event.messageID, () => {}, true);
-   
-    const endTime = new Date().getTime(); // Move endTime inside the asynchronous block
-      const timeTaken = (endTime - startTime) / 1000; 
-   
-
-      const res = await axios.get(apiUrl);
-      const data = res.data.result;
-      const imgData = [];
-
-      for (let i = 0; i < Math.min(numberSearch, data.length); i++) {
-        const imgResponse = await axios.get(data[i], {
-          responseType: "arraybuffer"
-        });
-        const imgPath = path.join(__dirname, "cache", ${i + 1}.jpg);
-        await fs.outputFile(imgPath, imgResponse.data);
-        imgData.push(fs.createReadStream(imgPath));
-      }
-
-    api.setMessageReaction("✅", event.messageID, () => {}, true);
-   
-      await api.sendMessage({
-        body: Here are the top results of the query "${keySearchs}" from Pexels\nTime taken: ${timeTaken} seconds,
-        attachment: imgData,
-      }, event.threadID, event.messageID);
-    
-   
-      await fs.remove(path.join(__dirname, "cache"));
-    } catch (error) {
-      console.error(error);
-      return api.sendMessage(
-        An error occurred.,
-        event.threadID,
-        event.messageID
-      );
-    }
-  }
 };
-ai-technology.onrender.com
