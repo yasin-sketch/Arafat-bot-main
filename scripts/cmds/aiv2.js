@@ -1,7 +1,7 @@
 
 module.exports = {
 	config: {
-		name: "ai",
+		name: "ai2",
 		aliases: ["blackbox"],
 		version: "1.0",
 		author: "Samir Œ",
