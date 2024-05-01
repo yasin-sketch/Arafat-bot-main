@@ -33,7 +33,7 @@ module.exports = {
       api.sendMessage('⏳ Generating...', tid, mid);
 
       let enctxt = encodeURIComponent(txt);
-      let url = `https://arjhil-prodia-api.arjhilbard.repl.co/generate?prompt=${enctxt}&model=${txt2}`;
+      let url = `https://apis-samir.onrender.com//generate?prompt=${enctxt}&model=${txt2}`;
 
       let result = await axios.get(url, { responseType: 'arraybuffer' });
       fs.writeFileSync(path, result.data);
