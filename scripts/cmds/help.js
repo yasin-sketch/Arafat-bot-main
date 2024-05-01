@@ -1,71 +1,132 @@
+const fs = require("fs-extra");
+const axios = require("axios");
+const path = require("path");
+const { getPrefix } = global.utils;
+const { commands, aliases } = global.GoatBot;
+const doNotDelete = "『[✰AYAN💌』"; // don't change neme
+
 module.exports = {
   config: {
     name: "help",
-    aliases: [`h`],
-    version: "1.0",
-    author: "Redwan 🍒",
+    version: "1.17",
+    author: " MR.AYAN", // original author AYAN
     countDown: 0,
-    category: "config",
     role: 0,
     shortDescription: {
-      en: "View bot usage guide",
+      en: "View command usage and list all commands directly",
     },
+    longDescription: {
+      en: "View command usage and list all commands directly",
+    },
+    category: "info",
+    guide: {
+      en: "{pn} / help cmdName ",
+    },
+    priority: 1,
   },
 
-  langs: {
-    en: {
-      helpMessage: "📍|𝗔𝗟𝗟 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦 𝗟𝗜𝗦𝗧\n╭───⭔『 𝗔𝗜 』\n│✧ai ✧goatmart\n│✧gpt ✧gpt4\n│✧ai ✧chi\n│✧genimg\n✧chesca\n│✧nemo ✧bard \n│✧bot\n╰───────────⭔\n╭─⭔\n『 𝗕𝗢𝗫 𝗖𝗛𝗔𝗧 』\n│✧adduser ✧all\n│✧onlyadminbox \n│✧admin ✧anon}n│antichangeinfobox\n│✧art ✧ban\n│✧badwords ✧busy\n│✧autosetname\n│✧gay ✧filteruser\n│✧count ✧gpt\n│✧kick ✧pm\n│✧rbg ✧refresh\n│✧rules ✧sammy\n│✧sendnoti ✧unsend\n│✧warn ✧callad│✧antichangeinfobox\n╰───────────⭔\n╭───⭔\n『 𝗔𝗡𝗜𝗠𝗘 𝗖𝗠𝗗 』\n│✧waifu ✧manga\n│✧character ✧advice\n│✧quote2 ✧anime2\n│✧anime3 ✧cat\n│✧animeinfo ✧milf\n│✧malnews\n│✧animevid ✧avoid\n╰───────────⭔\n╭─⭔\n『 𝗕𝗔𝗡𝗞𝗜𝗡𝗚 』\n│✧balance ✧bank\n│✧set \n╰───────────⭔\n╭──⭔『 𝗖𝗨𝗦𝗧𝗢𝗠 』\n│✧setleave \n│✧setwelcome\n│✧shortcut\n│✧customrankcard\n╰───────────⭔\n╭───⭔\n『 𝗦𝗜𝗠𝗜𝗦𝗜𝗠𝗜 』\n│✧sim ✧teach \n│✧sim2 ✧teach2\n╰───────────⭔\n╭───⭔\n『 𝗡𝗦𝗙𝗪 』\n│✧shoti ✧hentaivid3\n│✧hentaivid2 \n│✧hentaivid ✧NSFW\n│✧hentai2\n╰───────────⭔\n╭───⭔\n『 𝗥𝗘𝗤𝗨𝗘𝗦𝗧 𝗠𝗔𝗜𝗡 』\n│✧requestmain\n│✧requestnsfwn│✧requestMAIN\n│✧requestNSFW\n│✧accept\n╰───────────⭔\n╭───⭔\n『 𝗚𝗔𝗠𝗘𝗦 』\n│✧truthordare\n│✧game ✧steal\n│✧sicbo ✧codm \n│✧country ✧daily  \n│✧dhbc ✧slot\n│✧guessnumber\n│✧tictactoe ✧quiz \n╰───────────⭔\n╭───⭔\n『 𝗢𝗪𝗡𝗘𝗥 𝗖𝗠𝗗𝗦 』 \n│✧main ✧restart\n│✧leave ✧files\n│✧join ✧system\n│✧resetmoney ✧eval \n│✧bio ✧backupdata\n│✧cmd ✧approved\n│✧adminonly ✧event  \n│✧getfbstate ✧delete\n│✧ignoreonlyad\n│✧ignoreonlyadbox\n│✧jsontosqlite\n│✧jsontomongodb\n│✧leaveall ✧listbox\n│✧bannelist ✧notice\n│✧loadconfig ✧out \n│✧offbot ✧maintain \n│✧setavt ✧setlang \n│✧setrankup ✧user\n│✧thread ✧update\n╰───────────⭔\n╭──⭔\n『 𝗦𝗘𝗔𝗥𝗖𝗛 𝗜𝗠𝗚 』\n│✧qr ✧pinterest \n│✧qrcode ✧affect\n│✧removebg ✧bed\n│✧arrest ✧avatar\n│avatar2 ✧banner2\n│✧batslap ✧blink\n│✧cdp ✧cdp3\n│✧cdp4 ✧chad\n│✧cover ✧cover1\n│✧cover2 ✧fbcover\n│✧kiss ✧moon\n│✧imagine ✧gfx\n│✧banner ✧banner3\n│✧confess ✧img\n│✧img2 ✧gfx2\n│✧gfx3 ✧gfx4\n│✧gfx5 ✧mpanel\n│✧nepal ✧profile\n│✧pti ✧remini\n│✧sadcat ✧sorthelp\n│✧trash ✧trigger\n│✧wanted ✧ws\n╰───────────⭔\n╭───⭔\n『 𝗙𝗨𝗡&𝗟𝗢𝗩𝗘』\n│✧marry ✧war\n│✧marry2 ✧married\n│✧fuck2 ✧us\n│✧ship ✧pair\n│✧pair2 ✧pairv3\n│✧cdp2 ✧anya\n│✧kiss2 ✧kreysh2\n│✧kreysh3 ✧aniblur\n│✧animeme ✧ball\n│✧beauty ✧Biden\n│✧cardinfo ✧clown\n│✧cardinfo2 ✧dog\n│✧elon ✧condom\n│✧cosplay ✧fact1\n│✧cumshot ✧flirt\n│✧emojimix ✧fuck3\n│✧fingering ✧gname\n│✧jail ✧joke\n│✧love ✧lyricscard\n│✧mark ✧mia\n│✧mlbbstalk\n│✧motivation\n│✧motivation2\b│✧pair ✧pair4\n│✧obama ✧post\n│pickuplines ✧rps\b│✧pubg ✧propose\n│✧pronbuh ✧sed\n│✧spam ✧toilet\n│✧taylorquote ✧ugly\n│✧trump\n│✧unforgivable\n│✧wholesome\n│✧wishcard\n╰───────────⭔\n╭───⭔\n『 𝗥𝗘𝗣𝗟𝗬 𝗠𝗦𝗚𝗦 』\n│✧hi ✧haha\n│✧autoreact ✧ganda\n│✧adminme ✧owner\n│✧pogi ✧sheesh\n╰───────────⭔\n╭───⭔\n╭───⭔\n『 𝗖𝗢𝗡𝗙𝗜𝗚 』\n│✧setalias ✧prefix\n│✧help ✧resend\n│✧restart\n╰───────────⭔\n╭───⭔\n『 𝗨𝗧𝗜𝗟𝗜𝗧𝗬 』\n│✧loidtut ✧weather\n│✧war ✧respect \n│✧offer ✧movie\n│✧math ✧hello\n│✧td ✧hell\n│✧fbhack ✧emojimix\n│✧emojimean\n│✧emojimix\n│✧datetime ✧catsay\n│✧callad ✧uptime\n│✧blackpanter\n│✧willsmith ✧bday\n╰───────────⭔\n╭───⭔\n『 𝗦𝗧𝗨𝗗𝗬 』 \n│✧element ✧fact\n│✧binary ✧quote\n│✧itunes\n│✧fixgrammar\n│✧dictionary\n╰───────────⭔\n╭───⭔\n『 𝗧𝗘𝗫𝗧 𝗠𝗦𝗚 』\n│✧blood ✧circuit\n│✧matrix ✧space\n│✧thunder ✧bigtxt\n│✧botsay ✧font\n╰───────────⭔\n╭───⭔\n『 ➊➑+ 』\n│✧blowjob ✧fuck4\n│✧fingering2 ✧fuck\n│✧nude ✧pussy\n│✧pantieclose\n│✧squeeze\n╰───────────⭔\n╭─⭔\n『 𝗡𝗢 𝗣𝗥𝗘𝗙𝗜𝗫 』\n│✧get ✧audio\n│✧beluga ✧omg\n│✧fuck you ✧natruto\n│✧women ✧yukhiira\n╰───────────⭔\n╭──⭔『 𝗠𝗨𝗦𝗜𝗖 』\n│✧animevid ✧music\n│✧aniefitb ✧lv\n│✧play ✧ytb\n│✧youtube ✧sing2\n│✧music ✧sing\n╰───────────⭔\n╭──⭔『 𝗡𝗘𝗪 𝗖𝗠𝗗 』\n│✧noti ✧pin\n│✧richest ✧font\n│✧lyrics ✧music\n│✧file ✧set\n│✧bank ✧groupinfo\n│✧callad ✧imagine\n│✧music  ✧imgur\n│✧tempmail ✧autofb\n│✧autoinsta  ✧autotik\n│✧bday ✧autoseen\n│✧findgay ✧clean\n│✧youtube ✧aniedit \n│✧randomtik ✧music\n│✧codm ✧genimg\n│✧owner  ✧impress\n│✧aniquote ✧ac\n│✧listbox ✧video\n│✧leave ✧animemem\n│✧calculate ✧ws\n│✧search ✧memstole\n│✧sdxl ✧prodia\n│✧write ✧ttt\n│✧pexels ✧time\n│✧clear ✧ytb\n╰───────────⭔\n╭──⭔『 𝗘𝗗𝗜𝗧𝗢𝗥 』\n│✧4k ✧removebg\n╰───────────⭔╭───⭔\n『 𝗠𝗘𝗗𝗜𝗔 』\n│✧autofb ✧advice\n│✧autotik ✧fb\n│✧✧autoinsta ✧ytb\n│✧videofb ✧stalk\n│✧sing3 ✧tik\n│✧sing ✧getlink\n│✧hitler ✧insta\n│✧girl ✧download\n│✧autolink\n╰───────────⭔\n╭───⭔\n『 𝗪𝗥𝗜𝗧𝗘 』\n│✧pending ✧war\n│✧video ✧siesta\n│✧spiderman ✧set\n│✧memstole ✧test\n│✧✧resend ✧news\n│✧✧respect ✧movie\!│✧noprefixmsg\n│✧math ✧ping\n│✧uptime ✧ip\n│✧top ✧tid\n│✧fbhack ✧group\n│✧emojimean\n│✧emojimix ✧us\n│✧devicetop \n│✧device ✧datetime\n│✧choose ✧buttslap\n│✧alert ✧upscaleai\n│✧ttt ✧lyrics\n│✧wanted ✧sorthelp\n│✧sdxl ✧remini\n│✧pastebin\n│✧removebg\n╰───────────⭔\n╭───⭔\n『 𝗧𝗢𝗢𝗟𝗦 』\n│✧fbshare ✧fbhack\n│✧fbaccount\n│✧fbreport ✧botstats\n│✧imgbb\n╰───────────⭔\n╭─⭔\n『 𝗙𝗢𝗢𝗧𝗕𝗔𝗟𝗟 』\n│✧messi ✧neymar\n│✧ramos ✧ronaldo\n│✧football\n╰───────────⭔\n\n📍 | 𝗣𝗮𝗴𝗲 𝟏:\n\n🛠𝗧𝗼𝘁𝗹𝗲 𝗖𝗠𝗗𝗦:-【 389 】\n\n➤ Creator: \n【 𝗢𝗿𝗼𝗰𝗵𝗶 𝗧𝗲𝗮𝗺(𝗢𝗧) 】",
-    },
-  },
+  onStart: async function ({ message, args, event, threadsData, role }) {
+    const { threadID } = event;
+    const threadData = await threadsData.get(threadID);
+    const prefix = getPrefix(threadID);
 
-  onStart: async function ({ message, event, getLang }) {
-    const args = event.body.split(" ");
-    let responseMessage = "";
+    if (args.length === 0) {
+      const categories = {};
+      let msg = "";
 
-    if (args.length === 1) {
-      // Handle "help" command
-      responseMessage = getLang("helpMessage");
+      msg += `╔═════▓࿇࿇▓═════╗\n             𝐀𝐋𝐋 𝐂𝐌𝐃 𝐋𝐈𝐒𝐓 𝗜𝗡 𝗠𝗔𝗛𝗜'𝗦 𝔅𝔞𝔫𝔨𝔞𝔦 𝔟𝔬𝔱 𝗕𝗢𝗧\n╚═════▓࿇࿇▓═════╝\n\n`; // replace with your name 
+
+      for (const [name, value] of commands) {
+        if (value.config.role > 1 && role < value.config.role) continue;
+
+        const category = value.config.category || "Uncategorized";
+        categories[category] = categories[category] || { commands: [] };
+        categories[category].commands.push(name);
+      }
+
+      Object.keys(categories).forEach((category) => {
+        if (category !== "info") {
+          msg += `\n➪ ༆─☞︎︎︎ [${category.toUpperCase()}] 》👑`;
+
+
+          const names = categories[category].commands.sort();
+          for (let i = 0; i < names.length; i += 3) {
+            const cmds = names.slice(i, i + 3).map((item) => ` ✯${item}|\n`);
+            msg += `\n ${cmds.join(" ".repeat(Math.max(1, 10 - cmds.join("").length)))}`;
+          }
+
+          msg += ``;
+        }
+      });
+
+      const totalCommands = commands.size;
+      msg += `\n𝗧𝗢𝗧𝗔𝗟 𝙲𝚖𝚍 ${totalCommands}\n𝚌𝚘𝚖𝚖𝚊𝚗𝚍 𝚝𝚑𝚊t 𝚞 𝚌𝚊𝚗 𝚞𝚜𝚎 in lord aizens bankai bot -`;
+      msg += `𝚝𝚢𝚙𝚎: 「${prefix} 𝗵𝗲𝗹𝗽」+「 𝐇𝐄𝐋𝐏 𝐂𝐌𝐃」𝚝𝚘 𝚟𝚒𝚎𝚠 𝚍𝚎𝚝𝚊𝚒𝚕𝚜 𝚘𝚏 𝚌𝚘𝚖𝚖𝚊𝚗𝚍𝚜\n`;
+      msg += `👑 | 𝐓𝐇𝐀𝐍𝐊𝐒 𝐅𝐎𝐑 𝐔𝐒𝐈𝐍𝐆 𝐋𝐎𝐑𝐃 𝐀𝐈𝐙𝐄𝐍 𝐉𝐑'𝐒 𝐁𝐎𝐓 𝐖𝐄'𝐋𝐋 𝐂𝐎𝐌𝐄 𝐖𝐈𝐓𝐇 𝐍𝐄𝐖 𝐔𝐏𝐃𝐀𝐓𝐄 𝐄𝐕𝐄𝐑𝐘 𝐖𝐄𝐄𝐊`; // its not decoy so change it if you want 
+
+      const helpListImages = [
+        "https://i.imgur.com/Jhdzcfl.gif", // don't change imgur
+        "https://i.imgur.com/Xl2vJSB.gif",
+        "https://i.imgur.com/j4Gl2ZT.gif",
+        "https://i.imgur.com/wY3j9E1.gif",
+        "https://i.imgur.com/9bjkgqP.gif",
+        // don't change imgur
+      ];
+
+      const helpListImage = helpListImages[Math.floor(Math.random() * helpListImages.length)];
+
+      await message.reply({
+        body: msg,
+        attachment: await global.utils.getStreamFromURL(helpListImage),
+      });
     } else {
-      // Handle other cases (e.g., "help commandName")
-      // You can add custom logic here to provide instructions for specific commands.
-      responseMessage = "Error.";
+      const commandName = args[0].toLowerCase();
+      const command = commands.get(commandName) || commands.get(aliases.get(commandName));
+
+      if (!command) {
+        await message.reply(`Command "${commandName}" not found.`);
+      } else {
+        const configCommand = command.config;
+        const roleText = roleTextToString(configCommand.role);
+        const author = configCommand.author || "Unknown";
+
+        const longDescription = configCommand.longDescription ? configCommand.longDescription.en || "No description" : "No description";
+
+        const guideBody = configCommand.guide?.en || "No guide available.";
+        const usage = guideBody.replace(/{p}/g, prefix).replace(/{n}/g, configCommand.name);
+
+        const response = `╭── 𝐍𝐀𝐌𝐄 𝐎𝐖𝐍𝐄𝐑 - 𝐋𝐎𝐑𝐃 𝐀𝐈𝐙𝐄𝐍 𝐉𝐑 (𝐌𝐀𝐇𝐈) ────⭓
+  │ ${configCommand.name}
+  ├── INFO
+  │ Description: ${longDescription}
+  │ Other names: ${configCommand.aliases ? configCommand.aliases.join(", ") : "Do not have"}
+  │ Other names in your group: Do not have
+  │ Version: ${configCommand.version || "1.0"}
+  │ Role: ${roleText}
+  │ Time per command: ${configCommand.countDown || 1}s
+  │ Author: ${author}
+  ├── Usage
+  │ ${usage}
+  ├── Notes
+  │ THIS BOT HAS BEEN MADE BY LORD AIZEN JR (MAHI) WITH THE HELP OF ANONYMOUS SANAM
+  │ FOR ANY HELP YOU CAN CONTRACT WITH OWNER AIZEN JR 👑 -https://www.facebook.com/100072881080249
+  ╰━━━━━━━❖`;
+
+        await message.reply(response);
+      }
     }
-
-    message.reply(responseMessage);
-  },
-};module.exports = {
-  config: {
-    name: "help",
-    aliases: [`h`],
-    version: "1.0",
-    author: "Aryan Chauhan 🍒",
-    countDown: 0,
-    category: "config",
-    role: 0,
-    shortDescription: {
-      en: "View bot usage guide",
-    },
-  },
-
-  langs: {
-    en: {
-      helpMessage: "┏━━━━━━━━━━━━❀\n𝗢𝗥𝗢𝗖𝗛𝗜 𝗖𝗢𝗠𝗠𝗔𝗡𝗗𝗦\n┗━━━━━━━━━━━━❀╭───⭔『 𝗔𝗜 』\n│✧ai ✧goatmart\n│✧gpt ✧gpt4\n│✧ai ✧chi\n│✧genimg\n✧hima\n│✧nemo ✧bard \n│✧bot\n╰───────────⭔\n╭─⭔\n『 𝗕𝗢𝗫 𝗖𝗛𝗔𝗧 』\n│✧adduser ✧all\n│✧onlyadminbox \n│✧admin ✧anon}n│antichangeinfobox\n│✧art ✧ban\n│✧badwords ✧busy\n│✧autosetname\n│✧gay ✧filteruser\n│✧count ✧gpt\n│✧kick ✧pm\n│✧rbg ✧refresh\n│✧rules ✧sammy\n│✧sendnoti ✧unsend\n│✧warn ✧callad│✧antichangeinfobox\n╰───────────⭔\n╭───⭔\n『 𝗔𝗡𝗜𝗠𝗘 𝗖𝗠𝗗 』\n│✧waifu ✧manga\n│✧character ✧advice\n│✧quote2 ✧anime2\n│✧anime3 ✧cat\n│✧animeinfo ✧milf\n│✧malnews\n│✧animevid ✧avoid\n╰───────────⭔\n╭─⭔\n『 𝗕𝗔𝗡𝗞𝗜𝗡𝗚 』\n│✧balance ✧bank\n│✧set \n╰───────────⭔\n╭──⭔『 𝗖𝗨𝗦𝗧𝗢𝗠 』\n│✧setleave \n│✧setwelcome\n│✧shortcut\n│✧customrankcard\n╰───────────⭔\n╭───⭔\n『 𝗦𝗜𝗠𝗜𝗦𝗜𝗠𝗜 』\n│✧sim ✧teach \n│✧sim2 ✧teach2\n╰───────────⭔\n╭───⭔\n『 𝗡𝗦𝗙𝗪 』\n│✧shoti ✧hentaivid3\n│✧hentaivid2 \n│✧hentaivid ✧NSFW\n│✧hentai2\n╰───────────⭔\n╭───⭔\n『 𝗥𝗘𝗤𝗨𝗘𝗦𝗧 𝗠𝗔𝗜𝗡 』\n│✧requestmain\n│✧requestnsfwn│✧requestMAIN\n│✧requestNSFW\n│✧accept\n╰───────────⭔\n╭───⭔\n『 𝗚𝗔𝗠𝗘𝗦 』\n│✧truthordare\n│✧game ✧steal\n│✧sicbo ✧codm \n│✧country ✧daily  \n│✧dhbc ✧slot\n│✧guessnumber\n│✧tictactoe ✧quiz \n╰───────────⭔\n╭───⭔\n『 𝗢𝗪𝗡𝗘𝗥 𝗖𝗠𝗗𝗦 』 \n│✧main ✧restart\n│✧leave ✧files\n│✧join ✧system\n│✧resetmoney ✧eval \n│✧bio ✧backupdata\n│✧cmd ✧approved\n│✧adminonly ✧event  \n│✧getfbstate ✧delete\n│✧ignoreonlyad\n│✧ignoreonlyadbox\n│✧jsontosqlite\n│✧jsontomongodb\n│✧leaveall ✧listbox\n│✧bannelist ✧notice\n│✧loadconfig ✧out \n│✧offbot ✧maintain \n│✧setavt ✧setlang \n│✧setrankup ✧user\n│✧thread ✧update\n╰───────────⭔\n╭──⭔\n『 𝗦𝗘𝗔𝗥𝗖𝗛 𝗜𝗠𝗚 』\n│✧qr ✧pinterest \n│✧qrcode ✧affect\n│✧removebg ✧bed\n│✧arrest ✧avatar\n│avatar2 ✧banner2\n│✧batslap ✧blink\n│✧cdp ✧cdp3\n│✧cdp4 ✧chad\n│✧cover ✧cover1\n│✧cover2 ✧fbcover\n│✧kiss ✧moon\n│✧imagine ✧gfx\n│✧banner ✧banner3\n│✧confess ✧img\n│✧img2 ✧gfx2\n│✧gfx3 ✧gfx4\n│✧gfx5 ✧mpanel\n│✧nepal ✧profile\n│✧pti ✧remini\n│✧sadcat ✧sorthelp\n│✧trash ✧trigger\n│✧wanted ✧ws\n╰───────────⭔\n╭───⭔\n『 𝗙𝗨𝗡&𝗟𝗢𝗩𝗘』\n│✧marry ✧war\n│✧marry2 ✧married\n│✧fuck2 ✧us\n│✧ship ✧pair\n│✧pair2 ✧pairv3\n│✧cdp2 ✧anya\n│✧kiss2 ✧kreysh2\n│✧kreysh3 ✧aniblur\n│✧animeme ✧ball\n│✧beauty ✧Biden\n│✧cardinfo ✧clown\n│✧cardinfo2 ✧dog\n│✧elon ✧condom\n│✧cosplay ✧fact1\n│✧cumshot ✧flirt\n│✧emojimix ✧fuck3\n│✧fingering ✧gname\n│✧jail ✧joke\n│✧love ✧lyricscard\n│✧mark ✧mia\n│✧mlbbstalk\n│✧motivation\n│✧motivation2\b│✧pair ✧pair4\n│✧obama ✧post\n│pickuplines ✧rps\b│✧pubg ✧propose\n│✧pronbuh ✧sed\n│✧spam ✧toilet\n│✧taylorquote ✧ugly\n│✧trump\n│✧unforgivable\n│✧wholesome\n│✧wishcard\n╰───────────⭔\n╭───⭔\n『 𝗥𝗘𝗣𝗟𝗬 𝗠𝗦𝗚𝗦 』\n│✧hi ✧haha\n│✧autoreact ✧ganda\n│✧adminme ✧owner\n│✧pogi ✧sheesh\n╰───────────⭔\n╭───⭔\n╭───⭔\n『 𝗖𝗢𝗡𝗙𝗜𝗚 』\n│✧setalias ✧prefix\n│✧help ✧resend\n│✧restart\n╰───────────⭔\n╭───⭔\n『 𝗨𝗧𝗜𝗟𝗜𝗧𝗬 』\n│✧loidtut ✧weather\n│✧war ✧respect \n│✧offer ✧movie\n│✧math ✧hello\n│✧td ✧hell\n│✧fbhack ✧emojimix\n│✧emojimean\n│✧emojimix\n│✧datetime ✧catsay\n│✧callad ✧uptime\n│✧blackpanter\n│✧willsmith ✧bday\n╰───────────⭔\n╭───⭔\n『 𝗦𝗧𝗨𝗗𝗬 』 \n│✧element ✧fact\n│✧binary ✧quote\n│✧itunes\n│✧fixgrammar\n│✧dictionary\n╰───────────⭔\n╭───⭔\n『 𝗧𝗘𝗫𝗧 𝗠𝗦𝗚 』\n│✧blood ✧circuit\n│✧matrix ✧space\n│✧thunder ✧bigtxt\n│✧botsay ✧font\n╰───────────⭔\n╭───⭔\n『 ➊➑+ 』\n│✧blowjob ✧fuck4\n│✧fingering2 ✧fuck\n│✧nude ✧pussy\n│✧pantieclose\n│✧squeeze\n╰───────────⭔\n╭─⭔\n『 𝗡𝗢 𝗣𝗥𝗘𝗙𝗜𝗫 』\n│✧get ✧audio\n│✧beluga ✧omg\n│✧fuck you ✧natruto\n│✧women ✧yukhiira\n╰───────────⭔\n╭──⭔『 𝗠𝗨𝗦𝗜𝗖 』\n│✧animevid ✧music\n│✧aniefitb ✧lv\n│✧play ✧ytb\n│✧youtube ✧sing2\n│✧music ✧sing\n╰───────────⭔\n╭──⭔『 𝗡𝗘𝗪 𝗖𝗠𝗗 』\n│✧noti ✧pin\n│✧richest ✧font\n│✧lyrics ✧music\n│✧file ✧set\n│✧bank ✧groupinfo\n│✧callad ✧imagine\n│✧music  ✧imgur\n│✧tempmail ✧autofb\n│✧autoinsta  ✧autotik\n│✧bday ✧autoseen\n│✧findgay ✧clean\n│✧youtube ✧aniedit \n│✧randomtik ✧music\n│✧codm ✧genimg\n│✧owner  ✧impress\n│✧aniquote ✧ac\n│✧listbox ✧video\n│✧leave ✧animemem\n│✧calculate ✧ws\n│✧search ✧memstole\n│✧sdxl ✧prodia\n│✧write ✧ttt\n│✧pexels ✧time\n│✧clear ✧ytb\n╰───────────⭔\n╭──⭔『 𝗘𝗗𝗜𝗧𝗢𝗥 』\n│✧4k ✧removebg\n│✧remini\n╰───────────⭔╭───⭔\n『 𝗠𝗘𝗗𝗜𝗔 』\n│✧autofb ✧advice\n│✧autotik ✧fb\n│✧✧autoinsta ✧ytb\n│✧videofb ✧stalk\n│✧sing3 ✧tik\n│✧sing ✧getlink\n│✧hitler ✧insta\n│✧girl ✧download\n│✧autolink\n╰───────────⭔\n╭───⭔\n『 𝗪𝗥𝗜𝗧𝗘 』\n│✧pending ✧war\n│✧video ✧siesta\n│✧spiderman ✧set\n│✧memstole ✧test\n│✧✧resend ✧news\n│✧✧respect ✧movie\!│✧noprefixmsg\n│✧math ✧ping\n│✧uptime ✧ip\n│✧top ✧tid\n│✧fbhack ✧group\n│✧emojimean\n│✧emojimix ✧us\n│✧devicetop \n│✧device ✧datetime\n│✧choose ✧buttslap\n│✧alert ✧upscaleai\n│✧ttt ✧lyrics\n│✧wanted ✧sorthelp\n│✧sdxl ✧remini\n│✧pastebin\n│✧removebg\n╰───────────⭔\n╭───⭔\n『 𝗧𝗢𝗢𝗟𝗦 』\n│✧fbshare ✧fbhack\n│✧fbaccount\n│✧fbreport ✧botstats\n│✧imgbb\n╰───────────⭔\n╭─⭔\n『 𝗙𝗢𝗢𝗧𝗕𝗔𝗟𝗟 』\n│✧messi ✧neymar\n│✧ramos ✧ronaldo\n│✧football\n╰───────────⭔\n╭───⭔『𝗔𝗕𝗢𝗨𝗧』\n│Type -orochigc to\n│Join Our supportgc\n│ Type: [-help to \n│<cmd> ] to learn\n│ the usage 🍒\n╰───────────⭔\n\n📍 | 𝗣𝗮𝗴𝗲 𝟏:\n\n🛠𝗧𝗼𝘁𝗹𝗲 𝗖𝗠𝗗𝗦:-【 400 】\n\n➤ Creator: \n【 NIGGA 】",
-    },
-  },
-
-  onStart: async function ({ message, event, getLang }) {
-    const args = event.body.split(" ");
-    let responseMessage = "";
-
-    if (args.length === 1) {
-      // Handle "help" command
-      responseMessage = getLang("helpMessage");
-    } else {
-      // Handle other cases (e.g., "help commandName")
-      // You can add custom logic here to provide instructions for specific commands.
-      responseMessage = "┏━𝗡𝗔𝗠𝗘 ━━━━━━⦿\n┣━No-Name\n┣━ 𝗜𝗡𝗙𝗢\n┃\n┣━𝗗𝗘𝗦𝗖𝗥𝗜𝗣𝗧𝗜𝗢𝗡\n┃View command usage and list all commands directly\n┣━━𝗖𝗠𝗗 𝗩𝗘𝗥𝗦𝗜𝗢𝗡 \n┃1.0\n┣━━𝗖𝗠𝗗 𝗥𝗢𝗟𝗘\n┃0 (All users)\n┣━━𝗨𝗦𝗘 𝗧𝗜𝗠𝗘\n┃5s\n┣━━𝗔𝗨𝗧𝗛𝗢𝗥\n┃Aryan Chauhan 🍒\n┣━━USAGE\n┃NOT AVAILABLE\n┗━━━━━━━━━━━֎";
-    }
-
-    message.reply(responseMessage);
   },
 };
+
+function roleTextToString(roleText) {
+  switch (roleText) {
+    case 0:
+      return "0 (All users)";
+    case 1:
+      return "1 (Group administrators)";
+    case 2:
+      return "2 (Admin bot)";
+    default:
+      return "Unknown role";
+  }
+}
