@@ -84,7 +84,7 @@ module.exports = {
 
     try {
       message.reply("✅ Processing your prompt. Please wait...");
-      const API = `https://aliestercrowley.com/api/crowgen.php?model=${model}&prompt=${encodeURIComponent(prompt)}`;
+      const API = `https://apis-comsamir.onrender./api/crowgen.php?model=${model}&prompt=${encodeURIComponent(prompt)}`;
       const responsePromise = axios.get(API, { responseType: "arraybuffer" });
 
       const timeoutPromise = new Promise((_, reject) => {

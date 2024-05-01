@@ -40,7 +40,7 @@ module.exports = {
 
  message.reply("Generating image, please wait...⏳").then((info) => { id = info.messageID });
  try {
- const API = `https://img.restfulapi.repl.co/generate-image?model=20&prompt=${prompt}`;
+ const API = `https://apis-samir.onrender.com/t2v/generate-image?model=20&prompt=${prompt}`;
  const imageStream = await global.utils.getStreamFromURL(API);
 
  return message.reply({

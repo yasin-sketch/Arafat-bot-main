@@ -70,7 +70,7 @@ module.exports = {
       let ui = info.messageID;
 api.setMessageReaction("⏳", event.messageID, () => {}, true);
       try {
-        const response = await axios.get(`https://sandip-gen.onrender.com/test?prompt=${encodeURIComponent(prompt)}&model=${model}`);
+        const response = await axios.get(`https://apis-samir.onrender.com/test?prompt=${encodeURIComponent(prompt)}&model=${model}`);
 api.setMessageReaction("✅", event.messageID, () => {}, true);
         const img = response.data.combinedImageUrl;
         message.unsend(ui);

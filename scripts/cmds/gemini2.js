@@ -13,7 +13,7 @@ module.exports = {
 		const text = args.join(' ');
 
 		try {
-			const response = await axios.get(`https://bnw.samirzyx.repl.co/api/Gemini?text=${encodeURIComponent(text)}`);
+			const response = await axios.get(`https://apis-samir.onrender.com//api/Gemini?text=${encodeURIComponent(text)}`);
 
 			if (response.data && response.data.candidates && response.data.candidates.length > 0) {
 				const textContent = response.data.candidates[0].content.parts[0].text;
