@@ -2,9 +2,9 @@ const moment = require('moment-timezone');
 
 module.exports = {
   config: {
-    name: "info",
+    name: "info1",
     version: "1.0",
-    author: "MAHI",
+    author: "ASTA ICHIYUKIMØRI",
     role: 0,
     cooldown: 5,
     shortDescription: {
