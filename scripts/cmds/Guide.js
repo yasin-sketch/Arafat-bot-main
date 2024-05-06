@@ -128,7 +128,7 @@ async function generateHelpList(prefix) {
   let msg = "";
   const categories = {};
 
-  msg += `╔═══════════╗\n 𝗩𝗘𝗫 𝗞𝗦𝗛𝗜𝗧𝗜𝗭 \n╚═══════════╝`;
+  msg += `╔═══════════╗\n 𝘽𝘼𝙉𝙆𝘼𝙄 𝘼𝙄 \n╚═══════════╝`;
 
   for (const [name, value] of commands) {
     const category = value.config.category || "Uncategorized";
