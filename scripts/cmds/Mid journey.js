@@ -5,8 +5,8 @@ const tinyurl = require('tinyurl');
 
 module.exports = {
   config: {
-    name: "midjourny",
-    aliases: [],
+    name: "mj",
+    aliases: ["💸"],
     version: "1.0",
     author: "Ariyan X Red Wan X Mahi",
     countDown: 20,
