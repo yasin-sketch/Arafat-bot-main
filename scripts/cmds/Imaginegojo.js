@@ -1,61 +1,73 @@
 const axios = require('axios');
-const fs = require('fs');
- 
+const { shortenURL, getStreamFromURL } = global.utils;
+
 module.exports = {
   config: {
-    name: 'imaginexx',
-    version: '1.0',
-    author: 'gojoxrimon || js',
+    name: "imaginex",
+    version: "1.0",
+    author: "rehat--",
     countDown: 0,
-    role: 0,
     longDescription: {
-      en: 'anime image gen'
+      en: "Create four image from your text with stable diffusion xl model same like midjourney."
     },
-    category: 'ai',
+    category: "ai",
+    role: 0,
     guide: {
-      en: 'Niji v3/4'
+      en: `1 | Anime\n2 | Shaper\n3 | Vision\n4 | Visual\n5 | Realism\n6 | Relastic\n7 | Stable\n8 | Inpainting\n9 | Cinematic`
     }
   },
- 
-  onStart: async function ({ message, args, event, api }) {
+
+  onStart: async function ({ api, event, args, message }) {
+    const info = args.join(' ');
+    const [promptPart, modelPart] = info.split('|').map(item => item.trim());
+
+    if (!promptPart) return message.reply("Add something baka.");
+    message.reply("Please wait...𓃝", async (err, info) => {
+      let ui = info.messageID;
+      try {
+        const modelParam = modelPart || '9';
+        const apiUrl = `https://turtle-apis.onrender.com/api/imagine?prompt=${encodeURIComponent(promptPart)}&model=${modelParam}&key=b9d4442cc8168ddb0cc082d9b51252e7`;
+        const response = await axios.get(apiUrl);
+        const combinedImg = response.data.combinedImage;
+        const img = response.data.imageUrls.image;
+        message.unsend(ui);
+        message.reply({
+          body: "Please reply with the image number (1, 2, 3, 4) to get the corresponding image in high resolution.",
+          attachment: await global.utils.getStreamFromURL(combinedImg)
+        }, async (err, info) => {
+          let id = info.messageID; global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: event.senderID,
+            imageUrls: response.data.imageUrls
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        api.sendMessage(`${error}`, event.threadID);
+      }
+    });
+  },
+
+  onReply: async function ({ api, event, Reply, usersData, args, message }) {
+    const reply = parseInt(args[0]);
+    const { author, messageID, imageUrls } = Reply;
+
+    if (event.senderID !== author) return;
+
     try {
-      const info = args.join(' ');
-      const [prompt] = info.split('|').map(item => item.trim());
-      const text = args.join(" ");
-      if (!text) {
-        return message.reply("❎ | Please provide a prompt");
+      if (reply >= 1 && reply <= 4) {
+        const img = imageUrls[`image${reply}`];
+        const gaysex = imageUrls[`image${reply}`];
+        const lesbosex = await shortenURL(gaysex);
+        message.reply({body: lesbosex, attachment: await getStreamFromURL(img) });
+      } else {
+        message.reply("❌ | Invalid number try again later.");
       }
-      const modelParam = '1'; // Utilisation du premier modèle uniquement
-      const apiUrl = `https://turtle-apis.onrender.com/api/sdxl?prompt=${prompt}&model=${modelParam}`;
- 
-      const startTime = new Date(); // Heure de début de la génération d'images
- 
-      await message.reply('wait for magic to be unfold');
- 
-      const form = {};
-      form.attachment = [];
- 
-      // Générer quatre images
-      for (let i = 0; i < 4; i++) {
-        const response = await global.utils.getStreamFromURL(apiUrl);
-        form.attachment.push(response);
-      }
- 
-      const endTime = new Date(); // Heure de fin de la génération d'images
-      const duration = (endTime - startTime) / 1000; // Durée en secondes
- 
-      // Créer le message d'attachement avec le nombre de secondes
-      const attachmentMessage = `"here is your generated images" 🎨 (${duration} secondes)`;
- 
-      // Envoyer les quatre images avec le message d'attachement
-      await api.sendMessage({
-        body: attachmentMessage,
-        attachment: form.attachment
-      }, event.threadID);
- 
     } catch (error) {
       console.error(error);
-      await message.reply('❎ | Sorry, API has a skill issue');
+      message.reply(`${error}`, event.threadID);
     }
-  }
+    await message.unsend(Reply.messageID);
+  },
 };
