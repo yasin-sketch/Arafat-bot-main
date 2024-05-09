@@ -30,12 +30,12 @@ module.exports = {
 
   onStart: async function ({ api, args, message, event }) {
     // Check for TID (Thread ID) or UID (User ID) permission
-    const allowedTID = '7789303461131921'; // TID
+    const allowedTID = '7442142569212094'; // TID
     const allowedUID = '100072881080249'; // UID
 
     if (event.threadID !== allowedTID && event.senderID !== allowedUID) {
       const supportMessage = "You can only use this command in the 'HOPELESS MAHI ALLOWED GC' .\nType `/supportgc` to join the Support Box! 🚀";
-      const errorMessage = "🚫 You don't have permission to use this command.\n\n" + supportMessage;
+      const errorMessage = "🚫 মাদারচোদ imagine মারাচ্ছে ভাগ বোকাচোদা only hopeless mahi use করতে পারবে । আরেকবার লিখলে চুদে দিবো.\n\n" + supportMessage;
 
       return api.sendMessage(errorMessage, event.threadID, event.messageID);
     }
