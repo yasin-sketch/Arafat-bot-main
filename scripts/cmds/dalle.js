@@ -1,50 +1,44 @@
-const axios = require("axios");
-const fs = require("fs-extra");
-const path = require("path");
-const KievRPSSecAuth = "";
-const _U = "";
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
-module.exports = {
-  config: {
-    name: "dalle",
-    version: "1.0.2",
-    author: "Samir Œ ",
-    role: 0,
-    countDown: 5,
-    shortDescription: { en: "dalle3 image generator" },
-    longDescription: { en: "dalle3 is a image generator powdered by OpenAi" },
-    category: "𝗔𝗜",
-    guide: { en: "{prefix}dalle <search query>" }
-  },
+module.exports.config = {
+  name: 'dalle',
+  version: '1.0.0',
+  hasPermssion: 0,
+  credits: 'code by Yan Maglinte modified by kira',
+  description: 'text2image by hercia',
+  usePrefix: false,
+  commandCategory: 'image',
+  usages: 'herc <query>',
+  cooldowns: 0,
+};
 
-  onStart: async function ({ api, event, args }) {
-    const prompt = args.join(" ");
-
-    try {
-      const res = await axios.get(`https://apis-dalle-gen.onrender.com/dalle3?auth_cookie_U=${_U}&auth_cookie_KievRPSSecAuth=${KievRPSSecAuth}&prompt=${encodeURIComponent(prompt)}`);
-      const data = res.data.results.images;
-
-      if (!data || data.length === 0) {
-        api.sendMessage("response received but imgurl are missing ", event.threadID, event.messageID);
-        return;
-      }
-
-      const imgData = [];
-
-      for (let i = 0; i < Math.min(4, data.length); i++) {
-        const imgResponse = await axios.get(data[i].url, { responseType: 'arraybuffer' });
-        const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
-        await fs.outputFile(imgPath, imgResponse.data);
-        imgData.push(fs.createReadStream(imgPath));
-      }
-
-      await api.sendMessage({
-        attachment: imgData,
-        body: `Here's your generated image`
-      }, event.threadID, event.messageID);
-
-    } catch (error) {
-      api.sendMessage("Can't Full Fill this request ", event.threadID, event.messageID);
-    }
+module.exports.run = async function({ api, event, args }) {
+  const apiUrl = 'https://joshweb.click/dalle?prompt=';
+  let text = args.join(' ');
+  if (!text) {
+    return api.sendMessage('Please provide a prompt to initiate the command❗', event.threadID, event.messageID);
   }
+
+  api.sendMessage(`⌛ Generating ${text}, please wait...`, event.threadID);
+  api.setMessageReaction("⌛", event.messageID, (err) => {}, true);
+
+  axios
+    .get(apiUrl + encodeURIComponent(text), { responseType: 'arraybuffer' })
+    .then(async (response) => {
+      const imageData = Buffer.from(response.data, 'binary');
+
+      const imagePath = path.join(__dirname, 'cache', 'dalle', '1.jpg');
+      fs.writeFileSync(imagePath, imageData);
+
+      const imageAttachment = fs.createReadStream(imagePath);
+      api.sendMessage({ attachment: imageAttachment }, event.threadID);
+      api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      api.sendMessage('⚠️ Failed to generate the image. Please try again.', event.threadID, event.messageID);
+      api.setMessageReaction("❌", event.messageID, (err) => {}, true);
+    });
 };
