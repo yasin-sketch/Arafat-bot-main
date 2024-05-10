@@ -25,7 +25,7 @@ module.exports = {
 
 
       
-      const usernames = ['_rayto','hard.77br','gintakuu'];
+      const usernames = ['_rayto','hard.77br','gintakuu','cartongamer143,'];
       
       // you can add multiple usernames too if you want to get random videos from ramdom users.
 
