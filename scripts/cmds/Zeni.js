@@ -1,8 +1,8 @@
 module.exports = {
  config: {
- name: "Zeni",
+ name: "Antor",
  version: "1.0",
- author: "MAHI×zeni", // hopeless 
+ author: "MAHI×antor", // hopeless 
  countDown: 5,
  role: 0,
  shortDescription: "no prefix",
@@ -11,11 +11,11 @@ module.exports = {
  }, 
  onStart: async function(){}, 
  onChat: async function({ event, message, getLang }) {
- if (event.body && event.body.toLowerCase() === "zeni") {
+ if (event.body && event.body.toLowerCase() === "antor") {
  return message.reply({
- body: "𝘿𝙊𝙉'𝙏 𝘿𝙄𝙎𝙏𝙐𝙍𝘽 𝙏𝙃𝙐𝙉𝘿𝙀𝙍 𝙂𝙊𝘿 𝙕𝙀𝙉𝙄 𝙒𝙃𝙀𝙉 𝙃𝙀 𝙄𝙎 𝘽𝙐𝙎𝙔!!",
- attachment: await global.utils.getStreamFromURL("https://i.ibb.co/gr18sbV/1d3dbf048330590da90564fc6404451a.gif")
+ body: "𝙎𝙏𝙍𝘼𝙒𝙃𝘼𝙏 𝘼𝙉𝙏𝙊𝙍 𝙄𝙎 𝘽𝙐𝙎𝙔  𝙀𝘼𝙏𝙄𝙉𝙂 𝙈𝙀𝘼𝙏 𝙎𝙊 𝘿𝙊𝙉𝙏 𝘿𝙄𝙎𝙏𝙐𝙍𝘽!!",
+ attachment: await global.utils.getStreamFromURL("https://i.ibb.co/DtHwgV9/ec5f377a267f9e999a5f4b13bd0fb102.gif")
  });
  }
  }
-   }
+}
