@@ -23,7 +23,7 @@ module.exports = {
   onStart: async function ({ api, event, args }) {
     try {
     
-      const searchQueries = ["zoro", "madara", "obito", "luffy", "boruto"];// add your query of image here.
+      const searchQueries = ["zoro", "madara", "obito", "luffy", "boruto", "Rayliegh", "gol d Roger", "shanji", "106", "tsunade", "hentai", "mia khalifa"];// add your query of image here.
 
      
       const randomQueryIndex = Math.floor(Math.random() * searchQueries.length);
