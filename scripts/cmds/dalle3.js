@@ -1,48 +1,60 @@
-const axios = require('axios');
-const fs = require('fs-extra');
-const path = require('path');
+const fs = require("fs-extra");
+const axios = require("axios");
+const path = require("path");
+
+const cookie = "1fF83K-Z0uVQOqG0deEpKHPb0SUlxxJzemZyVSMs6WXD6Y1qFCioFc8no8eZNZwIU49ItQ-MNEY4Gp3gjIG9NgTvoiBKCVDG1-bzbvz7P9qgwjE9FrLGNX-yZQywc3kddeHsMiISe7b0Iwp2DAsNy9y1tj7N1-CYMPkvwuv1O9RE2XD-BvrQQFLXllQ2XGudGsTH06X4gvkLix1v29qxNPQ"; // Enter _U value.
+const auth = "https://tinyurl.com/4ctrj6y7"; // Enter KievRPSSecAuth value.
 
 module.exports = {
   config: {
     name: "dalle3",
-    aliases: ["dalle"],
     version: "1.0",
-    author: "JARiF",
-    countDown: 15,
+    author: "red wan", 
     role: 0,
-    shortDescription: "Generate images by Dalle3",
-    longDescription: "Generate images by Unofficial Dalle3",
-    category: "download",
+    countDown: 0,
+    longDescription: {
+      en: "Generate unique and captivating images using DALL-E 3"
+    },
+    category: "ai",
     guide: {
-      en: "{pn} prompt"
+      en: "{pn} <prompt>"
     }
   },
 
-  onStart: async function ({ message, args }) {
+  onStart: async function ({ api, event, args, message }) {
+    const prompt = args.join(" ");
+    if (!prompt) {
+      message.reply("📝 Enter your bing coding→📁");
+      return;
+    }
+    message.reply("𝐏𝐥𝐞𝐚𝐬𝐞 𝐰𝐚𝐢𝐭 𝐰𝐡𝐢𝐥𝐞 𝐩𝐫𝐨𝐜𝐞𝐬𝐬𝐢𝐧𝐠...⏳");
+
     try {
-      const k = args.join("");
+      const res = await axios.post(`https://rehatdesu.xyz/api/imagine/dalle?cookie=${cookie}&auth=${auth}&prompt=${encodeURIComponent(prompt)}`);
+      const data = res.data.results.images;
 
-       const waitingMessage = await message.reply("Processing your request, please wait...");
+      if (!data || data.length === 0) {
+        message.reply("🔐 | Sorry I can't accept it...");
+        return;
+      }
 
-      const res = await axios.get(`https://www.annie-jarif.repl.co/dalle?prompt=${encodeURIComponent(k)}`);
-      const data = res.data.data.picUrlList;
       const imgData = [];
-
-      for (let i = 0; i < data.length; i++) {
-        const imgResponse = await axios.get(data[i], { responseType: 'arraybuffer' });
-        const imgPath = path.join(__dirname, 'tmp', `${i + 1}.jpg`);
+      for (let i = 0; i < Math.min(4, data.length); i++) {
+        const imgResponse = await axios.get(data[i].url, { responseType: 'arraybuffer' });
+        const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
         await fs.outputFile(imgPath, imgResponse.data);
         imgData.push(fs.createReadStream(imgPath));
       }
 
-      await message.reply({
-        attachment: imgData
-      });
+      await api.sendMessage({
+        attachment: imgData,
+      }, event.threadID, event.messageID);
 
-      await fs.remove(path.join(__dirname, 'tmp'));
     } catch (error) {
       console.error(error);
-      return message.reply(error.message);
+      message.reply("🔐 | Sorry I can't accept it..");
+    } finally {
+      await fs.remove(path.join(__dirname, 'cache'));
     }
   }
-};
+} 
