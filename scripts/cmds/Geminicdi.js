@@ -80,7 +80,7 @@ async function kshitiz(api, event, args, message) {
 
 async function b(c, d, e, f) {
   try {
-    const g = await axios.get(`https://gemini-ai-pearl-two.vercel.app/kshitiz?prompt=${encodeURIComponent(c)}&uid=${d}&apikey=kshitiz`);
+    const g = await axios.get(`https://gpt-four.vercel.app/gpt?prompt=${encodeURIComponent(c)}&uid=${d}`);
     return g.data.answer;
   } catch (h) {
     throw h;
@@ -189,13 +189,13 @@ async function drawImage(message, prompt) {
 }
 
 const a = {
-  name: "gemini",
+  name: "gpt",
   aliases: ["ishida"],
-  version: "4.0",
+  version: "5.0",
   author: "vex_kshitiz",
   countDown: 5,
   role: 0,
-  longDescription: "Chat with gemini",
+  longDescription: "Chat with gpt",
   category: "ai",
   guide: {
     en: "{p}gemini {prompt}"
