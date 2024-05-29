@@ -8,20 +8,7 @@ module.exports = {
     name: "prefix",
     version: "1.3",
     author: "NTKhang | UPoL🐔",
-    countDown: 5,
     role: 0,
-    shortDescription: "Thay đổi prefix của bot",
-    longDescription: "Thay đổi dấu lệnh của bot trong box chat của bạn hoặc cả hệ thống bot (chỉ admin bot)",
-    category: "system",
-    guide: {
-      en: "   {pn} <new prefix>: change new prefix in your box chat"
-        + "\n   Example:"
-        + "\n    {pn} #"
-        + "\n\n   {pn} <new prefix> -g: change new prefix in system bot (only admin bot)"
-        + "\n   Example:"
-        + "\n    {pn} # -g"
-        + "\n\n   {pn} reset: change prefix in your box chat to default"
-    }
   },
 
   langs: {
@@ -32,7 +19,7 @@ module.exports = {
       confirmThisThread: "Please react to this message to confirm change prefix in your box chat",
       successGlobal: "Changed prefix of system bot to: %1",
       successThisThread: "Changed prefix in your box chat to: %1",
-      myPrefix: "👑System prefix: %1 \n ⚙ My prefix is: %2"
+      myPrefix: " ⚙ My prefix is: %2"
     }
   },
 
@@ -83,16 +70,10 @@ module.exports = {
 
   onChat: async function ({ event, message, getLang }) {
     if (event.body && event.body.toLowerCase() === "prefix") {
-        const attachment = await utils.getStreamFromURL(prefixImage);
+        const attachment = await utils.getStreamFromURL(UpolImage);
       return () => {
         return message.reply({ body: getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)), attachment: attachment });
       };
      }
-    if (event.body && event.body.toLowerCase() === "prefix") {
-      const attachment = await utils.getStreamFromURL(UpolImage);
-    return () => {
-      return message.reply({ body: getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)), attachment: attachment });
-    };
-   }
   }
 };
