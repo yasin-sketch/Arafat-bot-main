@@ -88,7 +88,7 @@ module.exports = {
         return message.reply({ body: getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)), attachment: attachment });
       };
      }
-    if (event.body && event.body.toLowerCase() === "bankai") {
+    if (event.body && event.body.toLowerCase() === "prefix") {
       const attachment = await utils.getStreamFromURL(UpolImage);
     return () => {
       return message.reply({ body: getLang("myPrefix", global.GoatBot.config.prefix, utils.getPrefix(event.threadID)), attachment: attachment });
