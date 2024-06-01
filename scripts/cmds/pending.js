@@ -47,7 +47,7 @@ onReply: async function({ api, event, Reply, getLang, commandName, prefix }) {
         const index = body.split(/\s+/);
         for (const singleIndex of index) {
             if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > Reply.pending.length) return api.sendMessage(getLang("invaildNumber", singleIndex), threadID, messageID);
-            api.sendMessage(`•THIS GC HAS BEEN APPROVED BY HØPÉLÉSS MÂHÎ:\n\nPLEASE SUPPORT US BY JOINING OUR ANIME GROUP\nhttps://facebook.com/groups/235038219450134/\n\n•أكتب ${prefix}FOR ANY ANY INFORMATION OR HELP CONTRACT OWNER 🙂🤍\n\n•أكتب ${prefix} THANKS FOR ADDING OUR BOT WE HOPE YOU'LL ENJOY 🌝🤍`, Reply.pending[singleIndex - 1].threadID);
+            api.sendMessage(`•THIS GC HAS BEEN APPROVED BY HØPÉLÉSS MÂHÎ • ENJOY `, Reply.pending[singleIndex - 1].threadID);
             count+=1;
         }
         return api.sendMessage(getLang("approveSuccess", count), threadID, messageID);
