@@ -14,7 +14,7 @@ module.exports = {
   config: {
     name: "mgen",
     version: "1.0",
-    author: "Red Wan× MAHI",
+    author: "Red Wan× MAHI", // original author JARiF@cock
     countDown: 5,
     role: 0,
     longDescription: {
