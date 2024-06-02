@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 // config 
-const apiKey = "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";
+const apiKey = "sk-proj-lH04YtxAR01gl17fLAooT3BlbkFJa01snMVzHKljZo7qDh8u";
 const maxTokens = 400;
 const numberGenerateImage = 5;
 const maxStorageMessage = 5;
@@ -16,7 +16,7 @@ const { openAIUsing, openAIHistory } = global.temp;
 module.exports = {
 	config: {
 		name: "sammy",
-    aliases: ["Sæmmy", "Sam", "sam", "ai", "Ai"],
+    aliases: ["ichi"],
     usePrefix: false,
 		version: "1.2",
 		author: "NTKhang",
