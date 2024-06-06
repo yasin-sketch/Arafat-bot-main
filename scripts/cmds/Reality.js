@@ -21,48 +21,40 @@ module.exports = {
     api.setMessageReaction("🕐", event.messageID, (err) => {}, true);
     try {
       const baseUrl = "https://kshitiz-t2i-kvx9.onrender.com/sdxl";
-      const prompt = args.join(" ").trim();
-      const model_id = 13;
+      let prompt = '';
+      const model_id = 13; 
 
-      if (!prompt) {
+      if (args.length > 0) {
+        prompt = args.join(" ").trim();
+      } else {
         return message.reply("❌ | Please provide a prompt.");
       }
 
-      const { data } = await axios.get(baseUrl, {
+      const apiResponse = await axios.get(baseUrl, {
         params: {
-          prompt,
-          model_id
+          prompt: prompt,
+          model_id: model_id
         }
       });
 
-      if (data.imageUrl) {
-        const imageUrl = data.imageUrl;
+      if (apiResponse.data.imageUrl) {
+        const imageUrl = apiResponse.data.imageUrl;
         const imagePath = path.join(__dirname, "cache", `reality.png`);
-        const { data: imageStream } = await axios.get(imageUrl, { responseType: "stream" });
-        
-        const writer = fs.createWriteStream(imagePath);
-        imageStream.pipe(writer);
-
-        writer.on("finish", () => {
+        const imageResponse = await axios.get(imageUrl, { responseType: "stream" });
+        const imageStream = imageResponse.data.pipe(fs.createWriteStream(imagePath));
+        imageStream.on("finish", () => {
           const stream = fs.createReadStream(imagePath);
           message.reply({
             body: "",
             attachment: stream
           });
         });
-
-        writer.on("error", (err) => {
-          console.error("Error writing image to file:", err);
-          message.reply("❌ | An error occurred while saving the image. Please try again later.");
-        });
-
       } else {
         throw new Error("Image URL not found in response");
       }
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error);
       message.reply("❌ | An error occurred. Please try again later.");
     }
   }
 };
-            
