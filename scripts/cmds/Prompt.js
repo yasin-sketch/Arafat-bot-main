@@ -1,6 +1,6 @@
 const { existsSync, mkdirSync } = require("fs");
 const axios = require("axios");
-const tinyurl = require("tinyurl");
+const tinyurl = require('tinyurl');
 
 module.exports = {
   config: {
@@ -11,7 +11,7 @@ module.exports = {
     countDown: 5,
     role: 0,
     shortDescription: "Generate prompt for an image",
-    longDescription: "Generate prompt for an image",
+    longDescription: "generate prompt for an image",
     category: "image",
     guide: {
       en: "{p}prompt (reply to image)"
@@ -20,30 +20,31 @@ module.exports = {
 
   onStart: async function ({ message, event, api }) {
     api.setMessageReaction("🕐", event.messageID, (err) => {}, true);
-
     const { type, messageReply } = event;
-    if (type !== "message_reply" || !messageReply || !messageReply.attachments) {
-      return message.reply("Please reply to an image.");
-    }
+    const { attachments, threadID } = messageReply || {};
 
-    const [attachment] = messageReply.attachments;
-    if (!attachment || attachment.type !== "photo") {
-      return message.reply("Reply to an image.");
-    }
+    if (type === "message_reply" && attachments) {
+      const [attachment] = attachments;
+      const { url, type: attachmentType } = attachment || {};
 
-    try {
-      const tinyUrl = await tinyurl.shorten(attachment.url);
-      const apiUrl = `https://prompt-gen-eight.vercel.app/kshitiz?url=${encodeURIComponent(tinyUrl)}`;
-      const response = await axios.get(apiUrl);
-
-      if (response.data && response.data.prompt) {
-        return message.reply(response.data.prompt);
-      } else {
-        throw new Error("Prompt not found in the response.");
+      if (!attachment || attachmentType !== "photo") {
+        return message.reply("Reply to an image.");
       }
-    } catch (error) {
-      console.error(error);
-      return message.reply("❌ An error occurred while generating the prompt.");
+
+      try {
+        const tinyUrl = await tinyurl.shorten(url);
+        const apiUrl = `https://prompt-gen-eight.vercel.app/kshitiz?url=${encodeURIComponent(tinyUrl)}`;
+        const response = await axios.get(apiUrl);
+
+        const { prompt } = response.data;
+
+        message.reply(prompt, threadID);
+      } catch (error) {
+        console.error(error);
+        message.reply("❌ An error occurred while generating the prompt.");
+      }
+    } else {
+      message.reply("Please reply to an image.");
     }
   }
 };
