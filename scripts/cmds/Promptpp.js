@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = {
   config: {
-    name: "prompt",
+    name: "p",
     version: "1.0",
     author: "JARiF",
     countDown: 5,
