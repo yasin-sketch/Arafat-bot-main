@@ -38,7 +38,7 @@ module.exports = {
       }
 
    
-      const apiUrl = `https://pin-kshitiz.vercel.app/pin?search=${encodeURIComponent(query)}`;
+      const apiUrl = `https://pin-two.vercel.app/pin?search=${encodeURIComponent(query)}`;
       const response = await axios.get(apiUrl);
       const imageData = response.data.result;
 
