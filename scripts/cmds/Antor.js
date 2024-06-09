@@ -156,7 +156,7 @@ module.exports = {
 
   config: {
 
-    name: "ai",
+    name: "tobi",
 
     aliases: [],
 
