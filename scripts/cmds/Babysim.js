@@ -1,115 +1,76 @@
-const axios = require('axios');
+const axios = require("axios");
 
 module.exports = {
   config: {
-    name: "baby",
-    aliases: ["baby", "bbe", "babe"],
-    version: "6.9.0",
-    author: "non prefix by Mahi-- | dipto",
+    name: 'nami',
+    aliases: ["boa", "vibi", "ori"],
+    version: '3.0',
+    author: 'RUBISH',
     countDown: 0,
     role: 0,
-    description: "better than all sim simi",
-    category: "chat",
+    description: {
+      vi: '𝗖𝗵𝗮𝘁 𝘄𝗶𝘁𝗵 𝘀𝗶𝗺𝗺𝗮',
+      en: '𝗖𝗵𝗮𝘁 𝘄𝗶𝘁𝗵 𝘀𝗶𝗺𝗺𝗮'
+    },
+    category: '𝗔𝗜',
     guide: {
-      en: "{pn}[anyMessage] teach [YourMessage] - [Reply1], [Reply2], [Reply3]... OR remove [YourMessage] OR remove [YourMessage] - [indexNumber] or msg or list OR edit [YourMessage] - [NewReply]"
+      vi: '   {pn} Hi  ',
+        
+      en: '   {pn} Hi '
+      
     }
   },
 
-  onChat: async ({ api, event }) => {
-    const link = `${global.GoatBot.config.api}/baby`;
-    const args = event.body.toLowerCase().split(" ");
-    const uid = event.senderID;
-    const dipto = event.body.toLowerCase();
-    let command;
-    let comd;
-    let final;
+  onReply: async function ({ api, event, Reply }) {
+    if (event.type == "message_reply") {
+      const reply = event.body.toLowerCase();
+      if (isNaN(reply)) {
+        try {
+          const response = await axios.get(`https://rubish-apihub.onrender.com/rubish//simma-chat?message=${encodeURIComponent(reply)}&apikey=rubish69`);
+          const ok = response.data.response;
+          await api.sendMessage(ok, event.threadID, (error, info) => {
+            global.GoatBot.onReply.set(info.messageID, {
+              commandName: this.config.name,
+              type: 'reply',
+              messageID: info.messageID,
+              author: event.senderID,
+              link: ok
+            });
+          }, event.messageID);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  },
 
+  onStart: async function ({ api, args, event }) {
     try {
-      if (!event.body) {
-        const ran = ["Bolo baby", "hum", "type help baby", "type !baby hi"];
-        const r = ran[Math.floor(Math.random() * ran.length)];
-        return api.sendMessage(r, event.threadID, event.messageID);
+      const rubish = args.join(" ").toLowerCase();
+      if (!args[0]) {
+        api.sendMessage(
+          "Bolo bby😘",
+          event.threadID,
+          event.messageID
+        );
+        return;
       }
-      //-------------------------------------------//
-      else if (args[0] === 'remove') {
-        const fina = dipto.replace("remove ", "");
-        const respons = await axios.get(`${link}?remove=${fina}`);
-        const dat = respons.data.message;
-        api.sendMessage(`${dat}`, event.threadID, event.messageID);
+      if (rubish) {
+        const response = await axios.get(`https://rubish-apihub.onrender.com/rubish//simma-chat?message=${encodeURIComponent(rubish)}&apikey=rubish69`);
+        const mg = response.data.response;
+        await api.sendMessage({ body: mg }, event.threadID, (error, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            type: 'reply',
+            messageID: info.messageID,
+            author: event.senderID,
+            link: mg
+          });
+        }, event.messageID);
       }
-      //------------------------------------//
-      else if (args[0] === 'rm' && dipto.includes('-')) {
-        const fina = dipto.replace("rm ", "");
-        const fi = fina.split(' - ')[0];
-        const f = fina.split(' - ')[1];
-        const respons = await axios.get(`${link}?remove=${fi}&index=${f}`);
-        const da = respons.data.message;
-        api.sendMessage(`${da}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-      else if (args[0] === 'list') {
-        const respo = await axios.get(`${link}?list=all`);
-        const d = respo.data.length;
-        api.sendMessage(`Total Teach = ${d}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-      else if (args[0] === 'msg' || args[0] === 'message') {
-        const fuk = dipto.replace("msg ", "");
-        const respo = await axios.get(`${link}?list=${fuk}`);
-        const d = respo.data.data;
-        api.sendMessage(`Message ${fuk} = ${d}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-      else if (args[0] === 'edit') {
-        const command = dipto.split(' - ')[1];
-        if (command.length < 2) {
-          return api.sendMessage('❌ | Invalid format! Use edit [YourMessage] - [NewReply]', event.threadID, event.messageID);
-        }
-        const res = await axios.get(`${link}?edit=${args[1]}&replace=${command}`);
-        const dA = res.data.message;
-        api.sendMessage(`changed ${dA}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-
-      else if (args[0] === 'teach' && args[1] !== 'amar') {
-        command = dipto.split(' - ')[1];
-        comd = dipto.split(' - ')[0];
-        final = comd.replace("teach ", "");
-        if (command.length < 2) {
-          return api.sendMessage('❌ | Invalid format! Use [YourMessage] - [Reply1], [Reply2], [Reply3]... OR remove [YourMessage] OR list OR edit [YourMessage] - [NewReply]', event.threadID, event.messageID);
-        }
-        const re = await axios.get(`${link}?teach=${final}&reply=${command}`);
-        const tex = re.data.message;
-        api.sendMessage(`✅ Replies added ${tex}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-      else if (args[0] === 'teach' && args[1] === 'amar') {
-        command = dipto.split(' - ')[1];
-        comd = dipto.split(' - ')[0];
-        final = comd.replace("teach ", "");
-        if (command.length < 2) {
-          return api.sendMessage('❌ | Invalid format! Use [YourMessage] - [Reply1], [Reply2], [Reply3]... OR remove [YourMessage] OR list OR edit [YourMessage] - [NewReply]', event.threadID, event.messageID);
-        }
-        const re = await axios.get(`${link}?teach=${final}&senderID=${uid}&reply=${command}`);
-        const tex = re.data.message;
-        api.sendMessage(`✅ Replies added ${tex}`, event.threadID, event.messageID);
-      }
-      //-------------------------------------//
-      else if (dipto.includes('amar name ki') || dipto.includes('amr nam ki') || dipto.includes('amar nam ki') || dipto.includes('amr name ki')) {
-        const response = await axios.get(`${link}?text=amar name ki&senderID=${uid}`);
-        const data = response.data.reply;
-        api.sendMessage(`${data}`, event.threadID, event.messageID);
-      }
-      //----------------------------------//
-      else {
-        const response = await axios.get(`${link}?text=${dipto}`);
-        const data = response.data.reply;
-        api.sendMessage(`${data}`, event.threadID, event.messageID);
-      }
-    } catch (e) {
-      console.log(e);
-      api.sendMessage("Check console for error ", event.threadID, event.messageID);
+    } catch (error) {
+      console.error(`Failed to get an answer: ${error.message}`);
+      api.sendMessage(`${error.message}.\nAn error`, event.threadID, event.messageID);
     }
   }
 };
-                                 
