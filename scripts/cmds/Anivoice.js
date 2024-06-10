@@ -26,7 +26,7 @@ module.exports = {
 
     try {
       const category = args[0].toLowerCase();
-      const response = await axios.get(`https://anivoice-uoie.onrender.com/kshitiz/${category}`, { responseType: "arraybuffer" });
+      const response = await axios.get(`https://anivoice-4jey.onrender.com/kshitiz/${category}`, { responseType: "arraybuffer" });
 
       const tempVoicePath = path.join(__dirname, "cache", `${Date.now()}.mp3`);
       fs.writeFileSync(tempVoicePath, Buffer.from(response.data, 'binary'));
