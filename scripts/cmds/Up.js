@@ -6,7 +6,7 @@ module.exports = {
     config: {
         name: "up",
         version: "1.2",
-        author: "AceGun",
+        author: "AceGun| Mahi--",
         countDown: 5,
         role: 2,
         shortDescription: {
@@ -21,8 +21,15 @@ module.exports = {
         }
     },
 
-    onStart: async function ({ message, event, args, api, usersData, threadsData }) {
-        const iURL = "https://i.imgur.com/XUSdDNd.gif";
+    onStart: async function ({ message, event, api, usersData, threadsData }) {
+        const gifURLs = [
+            "https://i.ibb.co/Gk4MzRf/image.gif",
+            "https://i.ibb.co/nj0ysh5/image.gif"
+        ];
+
+        const randomGifURL = gifURLs[Math.floor(Math.random() * gifURLs.length)];
+        const gifAttachment = await global.utils.getStreamFromURL(randomGifURL);
+
         const uptime = process.uptime();
         const s = Math.floor(uptime % 60);
         const m = Math.floor((uptime / 60) % 60);
@@ -64,7 +71,7 @@ module.exports = {
 
         const a = {
             body: `🐿 | Prefix: 「 ${global.GoatBot.config.prefix} 」\n🏃 | Bot Running: ${upSt}\n💁‍♂ | Boys: ${b}\n💁‍♀ | Girls: ${g}\n🏘 | Groups: ${t.length}\n👪 | Users: ${u.length}\n📡 | OS: ${system}\n📱 | Model: ${model}\n🛡 | Cores: ${cores}\n🗄 | Architecture: ${arch}\n📀 | Disk Information:\n        ${generateProgressBar((diskUsage.used / diskUsage.total) * 100)}\n        Usage: ${prettyBytes(diskUsage.used)}\n        Total: ${prettyBytes(diskUsage.total)}\n💾 | Memory Information:\n        ${generateProgressBar((process.memoryUsage().rss / totalMemory) * 100)}\n        Usage: ${processMemory}\n        Total: ${prettyBytes(totalMemory)}\n🗃 | Ram Information:\n        ${generateProgressBar(((os.totalmem() - os.freemem()) / totalMemory) * 100)}\n        Usage: ${prettyBytes(os.totalmem() - os.freemem())}\n        Total: ${prettyBytes(totalMemory)}`,
-            attachment: await global.utils.getStreamFromURL(iURL)
+            attachment: gifAttachment
         };
 
         message.reply(a, event.threadID);
@@ -94,4 +101,4 @@ function generateProgressBar(percentage) {
     const progressBar = `[${'█'.repeat(filledSections)}${'▒'.repeat(totalSections - filledSections)}]`;
 
     return progressBar;
-}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   }
