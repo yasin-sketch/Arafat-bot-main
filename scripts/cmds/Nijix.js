@@ -1,13 +1,12 @@
-const axios = require('axios');
-
+const axios = require("axios");
 module.exports = {
     config: {
         name: "niji",
         aliases: ["nijijourney", "art"],
         version: "1.0",
         author: "rehat--",
-        countDown: 1,
-        role: 2,
+        countDown: 0,
+        role: 0,
         longDescription: "Text to Image",
         category: "ai",
         guide: {
@@ -15,7 +14,7 @@ module.exports = {
       }
     },
 
-    onStart: async function ({ message, args, event, api }) {
+    onStart: async function({ api, args, message, event }) {
         try {
             let prompt = "";
             let style = "";
@@ -52,22 +51,23 @@ module.exports = {
                 prompt = args.join(" ");
             }
 
-            let apiUrl = `https://rehatdesu.xyz/api/imagine/niji?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&apikey=gaysex&style=${style}&preset=${preset}`;
+            
+            let apiUrl = `https://rehatdesu.xyz/api/imagine/niji?prompt=${encodeURIComponent(prompt)}.&aspectRatio=${aspectRatio}&style=${style}&preset=${preset}&apikey=gaysex`;
             if (imageUrl) {
                 apiUrl += `&imageUrl=${imageUrl}`;
             }
 
-            await message.reply('Please Wait...⏳');
+            const processingMessage = await message.reply("Please wait...⏳");
+            const response = await axios.post(apiUrl);
+            const img = response.data.url;
 
-            const response = await axios.get(apiUrl, { responseType: 'stream' });
+            await message.reply({
+                attachment: await global.utils.getStreamFromURL(img)
+            });
 
-            const form = { attachment: [] };
-            form.attachment.push(response.data);
-
-            await message.reply(form);
         } catch (error) {
             console.error(error);
-            await message.reply('An error occurred.');
+            message.reply("An error occurred.");
         }
     }
 };
