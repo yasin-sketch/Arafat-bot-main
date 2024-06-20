@@ -1,25 +1,24 @@
-module.exports = {
-	config: {
-		name: "tid",
-		version: "1.1",
-		author: "NTKhang",
-		countDown: 5,
-		role: 0,
-		shortDescription: {
-			vi: "Xem threadID",
-			en: "View threadID"
-		},
-		longDescription: {
-			vi: "Xem id nhóm chat của bạn",
-			en: "View threadID of your group chat"
-		},
-		category: "info",
-		guide: {
-			en: "{pn}"
-		}
-	},
+const axios = require('axios');
 
-	onStart: async function ({ message, event }) {
-		message.reply(event.threadID.toString());
-	}
+module.exports = {
+  config: {
+    name: 'tid',
+    version: '1.0',
+    role: 0,
+    author: 'UPoL The MiMis Momo ☺🌸',
+    category: 'thread',
+    shortDescription: {
+      en: 'Get the thread ID',
+    },
+    longDescription: {
+      en: 'Get the thread ID of the current thread.',
+    },
+  },
+  onStart: async function ({ api, event, args, message }) {
+    const threadID = event.threadID;
+    const threadInfo = await api.getThreadInfo(threadID);
+    const threadName = threadInfo.threadName || 'Unnamed Thread';
+    const threadIDMessage = `•Thread Name: ${threadName}\n•Thread ID: ${threadID}\n\n•Thread Link: https://www.facebook.com/messages/t/${threadID}`;
+    message.reply(threadIDMessage);
+  }
 };
