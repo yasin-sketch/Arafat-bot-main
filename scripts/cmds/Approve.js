@@ -1,78 +1,107 @@
 const fs = require('fs');
-const ag = require('approvegroup');
+const path = require('path');
+const axios = require('axios');
 
 module.exports = {
   config: {
     name: "approve",
-    aliases: ["approval"],
-    version: "2.0",
-    role: 2,
-    author: "Sheikh",
-    cooldown: 5,
+    version: "1.0",
+    role: "2",
+    author: "rehat--",
+    cooldown: "5",
     longDescription: {
-      en: "Command for Group Approval and Disapproval.",
+      en: "Group Approve and Disapproved Command",
     },
     category: "Developer",
     guide: {
-      en: "{pn} (add/remove/list/count)"
+      en: "{pn} (add/remove) [thread ID]"
     }
   },
   onStart: async function ({ api, event, threadsData, message, args }) {
     const threadsFile = 'threads.json';
+    const githubFilePath = 'threads.json';
+
+    const githubRepo = 'Forkkorlechudbo/_____Creation-Redwan';
+    const githubToken = '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';
 
     if (args.length < 1) {
-      message.reply("Specify an action: !approve (add/remove/list/count)");
+      message.reply("You must provide an action: !approve (add/remove) [thread ID]");
       return;
     }
+    if (!args || args.length < 2) {
+      return message.reply("You must provide the following action: !approve (add/remove) [thread ID]");
+    }
 
-    const action = args[0].toLowerCase();
+    const action = args[0];
+    const groupId = args[1];
+    const threadData = await threadsData.get(groupId);
+    const name = threadData.threadName;
 
-    switch (action) {
-      case "add":
-      case "remove":
-        if (!args[1]) {
-          message.reply("Provide the thread ID.");
-          return;
-        }
-        const groupId = args[1];
-        const threadData = await threadsData.get(groupId);
-        const name = threadData ? threadData.threadName : "Unknown";
+    let threads = [];
+    try {
+      threads = JSON.parse(fs.readFileSync(threadsFile));
+    } catch (err) {
+      console.error(err);
+    }
 
-        let threads = [];
-        try {
-          threads = JSON.parse(fs.readFileSync(threadsFile));
-        } catch (err) {
-          console.error('', err);
-        }
-
-        if (action === "add") {
-          if (!threads.includes(groupId)) {
-            ag.add(groupId);
-            message.reply(`Group: ${name}\nTID: ${groupId}\nApproved! ✅`);
-          } else {
-            message.reply(`Group: ${name}\nTID: ${groupId}\nAlready Approved! ✅`);
-          }
-        } else if (action === "remove") {
-          const index = threads.indexOf(groupId);
-          if (index >= 0) {
-            ag.del(groupId);
-            message.reply(`Group: ${name}\nTID: ${groupId}\nDisapproved! ❌`);
-          } else {
-            message.reply(`Group: ${name}\nTID: ${groupId}\nNot Approved Before! ❌`);
-          }
-        }
-        break;
-      case "list":
-        let approvedGroups = [];
-        try {
-          approvedGroups = JSON.parse(fs.readFileSync(threadsFile));
-        } catch (err) {
-          console.error('', err);
-        }
-        message.reply(`Total approved groups: ${approvedGroups.length}`);
-        break;
-      default:
-        message.reply("Invalid action. Use `add`, `remove`, `list`, or `count`.");
+    if (action === "add") {
+      if (!threads.includes(groupId)) {
+        threads.push(groupId);
+        fs.writeFileSync(threadsFile, JSON.stringify(threads));
+        await uploadToGitHub(threadsFile, githubToken, githubRepo, githubFilePath);
+        message.reply(`🍁 | Group: ${name}\n🆔 | TID: ${groupId}\n✅ | Status: Approved!`);
+      } else {
+        message.reply(`🍁 | Group: ${name}\n🆔 | TID: ${groupId}\n✅ | Status: Already Approved!`);
+      }
+    } else if (action === "remove") {
+      const index = threads.indexOf(groupId);
+      if (index >= 0) {
+        threads.splice(index, 1);
+        fs.writeFileSync(threadsFile, JSON.stringify(threads));
+        await uploadToGitHub(threadsFile, githubToken, githubRepo, githubFilePath);
+        message.reply(`🍁 | Group: ${name}\n🆔 | TID: ${groupId}\n❎ | Status: Disapproved!`);
+      } else {
+        message.reply(`🍁 | Group: ${name}\n🆔 | TID: ${groupId}\n❎ | Status: Not Approved Before!`);
+      }
     }
   }
 };
+
+async function uploadToGitHub(filePath, token, repo, repoPath) {
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const base64Content = Buffer.from(fileContent).toString('base64');
+
+    const getResponse = await axios.get(`https://api.github.com/repos/${repo}/contents/${repoPath}`, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    const sha = getResponse.data.sha;
+    await axios.put(`https://api.github.com/repos/${repo}/contents/${repoPath}`, {
+      message: `Update ${path.basename(filePath)}`,
+      content: base64Content,
+      sha: sha
+    }, {
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      await axios.put(`https://api.github.com/repos/${repo}/contents/${repoPath}`, {
+        message: `Create ${path.basename(filePath)}`,
+        content: base64Content
+      }, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+    } else {
+      console.error(error.message);
+    }
+  }
+      }
