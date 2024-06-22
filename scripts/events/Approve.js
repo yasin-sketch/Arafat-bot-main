@@ -1,38 +1,50 @@
 const fs = require('fs');
-const { getStreamFromURL } = global.utils;
+const { getStreamFromURL } = require("fb-watchman");
 
 module.exports = {
   config: {
-    name: "approval",
+    name: "outall",
+    aliases: ["outall"],
     version: "1.0",
-    author: "rulex/Loufi",
-    shortDescription: {
-      en: "approval mode by loufi",
-      vi: "Rời khỏi tất cả các nhóm trừ những nhóm được liệt kê trong threads.json"
-    },
+    author: "rehat--",
+    countDown: 5,
+    role: 2,
     longDescription: {
-      en: "Leaves all groups except those in threads.json and sends a message to the owner of the bot",
-      vi: "Rời khỏi tất cả các nhóm trừ những nhóm được liệt kê trong threads.json và gửi một tin nhắn cho chủ sở hữu của thread ID 4"
+      en: "Leave all unapproved threads"
     },
-    category: "event"
-  },
-  onStart: async function ({ api, event, threadsData, message }) {
-    const uid = "100072881080249";
-    const groupId = event.threadID;
-    const threadData = await threadsData.get(groupId);
-    const name = threadData.threadName;
-    let threads = [];
-    try {
-      threads = JSON.parse(fs.readFileSync('threads.json'));
-    } catch (err) {
-      console.error('', err);
+    category: "Developer",
+    guide: {
+      en: "{pn}"
     }
-    if (!threads.includes(groupId) && (event.logMessageType == "log:subscribe") ) {
-      message.send({body:"❌ | Added bot without admin's permission!!!\n\n❏Take permission from Admin Bot to use the Bot.\n\n❏ I will take leave in a minute.\n\n❏Join  Zone:\nhttps://m.me/j/AbbK73YPDlPCMDvd/\n\n\n Or type /supportgc — Bye Bye Guys",attachment: await getStreamFromURL("https://i.ibb.co/TqK1gM4/image.gif")});
-      setTimeout(() => {
-        api.removeUserFromGroup(api.getCurrentUserID(), groupId);
-        api.sendMessage(`❌ Bot is added to a new group named: ${name} without approval \n❏Tid:${groupId}\n❏Name: ${name}\n❏Type:\n${global.GoatBot.config.prefix}approve add ${groupId}`, uid);
-      }, 60000); // 2.5 seconds delay
+  },
+  onStart: async function ({ api, args, message, event }) {
+    const { getPrefix } = global.utils;
+    const p = getPrefix(event.threadID);
+    const imgURL = "https://i.ibb.co/2PQwZgf/image.gif";
+    const attachment = await global.utils.getStreamFromURL(imgURL); 
+    const approveList = JSON.parse(fs.readFileSync('threads.json', 'utf8'));
+    const threadList = await api.getThreadList(100, null, ["INBOX"]);
+    const botUserID = api.getCurrentUserID();
+    const unapprovedThreads = [];
+    
+    threadList.forEach(async (threadInfo) => {
+      if (threadInfo.isGroup && threadInfo.threadID !== event.threadID && !approveList.includes(threadInfo.threadID)) {
+        unapprovedThreads.push(threadInfo.name || threadInfo.threadID);
+        api.sendMessage({
+          body: `❌ | You Added The 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Without Permission !!\n\n✧Take Permission From 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Admin's to Use 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 In Your Group !!\n✧Join 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Support GC to Contact With Admin's !!\n\n✧Type ${p}supportgc within 20 seconds.\n\n Team anchestor-_-`,
+          attachment: attachment
+        }, threadInfo.threadID);
+        setTimeout(() => {
+          api.removeUserFromGroup(botUserID, threadInfo.threadID);
+        }, 20000);
+      }
+    });
+    
+    if (unapprovedThreads.length > 0) {
+      const unapprovedMessage = `✅ | Successfully left all groups except approved threads.`;
+      api.sendMessage(unapprovedMessage, event.threadID);
+    } else {
+      api.sendMessage("❌ | No unapproved groups to leave.", event.threadID);
     }
   }
-}
+        }
