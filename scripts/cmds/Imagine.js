@@ -30,7 +30,7 @@ module.exports = {
 
   onStart: async function ({ api, args, message, event }) {
     // Check for TID (Thread ID) or UID (User ID) permission
-    const allowedTID = '7442142569212094'; // TID
+    const allowedTID = '8008566255928114'; // TID
     const allowedUID = '100072881080249'; // UID
 
     if (event.threadID !== allowedTID && event.senderID !== allowedUID) {
