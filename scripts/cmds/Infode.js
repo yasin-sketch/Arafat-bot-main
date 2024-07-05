@@ -20,11 +20,11 @@ module.exports = {
     const name = userData.name;
 
     const ment = [{ id: id, tag: name }];
-    const a = "乃卂几Ҝ卂| 卂|";
-    const b = " / ";
-    const c = "MAHI";
+    const a = "ANCHESTOR AI";
+    const b = " - ";
+    const c = "RED WAN";
 const e = "Male";
-    const d = "m.me/100072881080249";
+    const d = "m.me/100094189827824";
 const f = " hopeless mahi";
 const g = "I LOVE THAT GIRL TOO MUCH 😩 BUT I CAN'T ASK ";
 
