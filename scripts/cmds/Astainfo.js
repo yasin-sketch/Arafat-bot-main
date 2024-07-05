@@ -23,9 +23,9 @@ module.exports = {
   },
 
   onStart: async function ({ message, prefix }) {
-    const botPrefix = /; // Use the provided bot prefix
-    const authorName = "HOPELESS MAHI";
-    const authorFB = "https://www.facebook.com/profile.php?id=100072881080249";
+    const botPrefix = -; // Use the provided bot prefix
+    const authorName = "RED WAN";
+    const authorFB = "https://web.facebook.com/devastatinglordxemon01";
 
     const now = moment();
     const date = now.format('MMMM Do YYYY');
@@ -38,13 +38,13 @@ module.exports = {
     const days = Math.floor(uptime / (60 * 60 * 24));
     const uptimeString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
 
-    const additionalText = "𝙏𝙃𝙄𝙎 𝘽𝙊𝙏 𝙒𝘼𝙎 𝙈𝘼𝘿𝙀 𝘽𝙔 𝙈𝘼𝙃𝙄 𝘼𝙉𝘿 𝙎𝘼𝙉𝘼𝙈";
+    const additionalText = "THIS masterpiece has been created by REDWAN";
 
     // Combine the bot information and additional text in a single message
     message.reply(`======[ℹ𝗕𝗼𝘁 𝗶𝗻𝗳𝗼:]======
      ☢ 𝗕𝗼𝘁 𝗽𝗿𝗲𝗳𝗶𝘅: ${botPrefix}
 ======================
-👾 𝗕𝗼𝘁 𝗻𝗮𝗺𝗲 : 乃卂几Ҝ卂|-卂|
+👾 𝗕𝗼𝘁 𝗻𝗮𝗺𝗲 : ANCHESTOR AI
 ======================
     🙇🏾‍♂👑 𝗢𝘄𝗻𝗲𝗿: ${authorName}
 ======================
