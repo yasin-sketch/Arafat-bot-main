@@ -1,7 +1,7 @@
 const axios = require('axios');
 module.exports = {
   config: {
-    name: "higen",
+    name: "igen",
     version: "1.0",
     author: "rehat--",
     countDown: 0,
