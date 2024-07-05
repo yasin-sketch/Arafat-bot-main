@@ -6,7 +6,7 @@ const axios = require('axios');
 
 module.exports = {
   config: {
-    name: "chamir",
+    name: "dex",
     aliases: ["sdi"],
     author: "Samir Œ/ Architectdevs",
     version: "1.0",
