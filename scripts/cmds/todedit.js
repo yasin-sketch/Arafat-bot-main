@@ -1,6 +1,6 @@
 const fs = require('fs');
 const allowedUsers = [   
-    "100088275903520",
+    "100094189827824",
     "100082741664058"];
 
 module.exports = {
