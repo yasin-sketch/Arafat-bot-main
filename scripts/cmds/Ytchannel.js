@@ -11,7 +11,7 @@ const channelLinks = [ // add channel link below from which channel you want to 
 
 module.exports = {
   config: {
-    name: "ytmahi",// name your cmd
+    name: "yt",// name your cmd
     aliases: ["ch"], // add aliases if needed
     author: "Vex_Kshitiz",// dont change this saar
     version: "1.0",
