@@ -2,7 +2,7 @@ module.exports = {
   config: {
     name: "war",
     version: "1.0",
-    author: "Xemon",
+    author: "redwan",
     role: 2,
     category: "texts",
     guide: {
@@ -58,6 +58,6 @@ setTimeout(() => {a({body: "শুয়োরের বাচ্চা কুত�
 setTimeout(() => {a({body: "তোগোরে ফাসিতে লটকাইয়া চুদমু" + " " + name, mentions: arraytag})} , 80000);
 setTimeout(() => {a({body: "তর মায়ের ভোদা শিরিষ কাগজ দিয়া ঘইষা দিমু।" + " " + name, mentions: arraytag})} , 82000);
 setTimeout(() => {a({body: "তর বাপের পুটকির ফুটা দিয়া কাডল ঢুকামু।" + " " + name, mentions: arraytag})} , 84000);
-setTimeout(() => {a({body: "XEMON THE GREAT EXIT!!😾🥀🤣" + " " + name, mentions: arraytag})} , 84000);
+setTimeout(() => {a({body: "War ended in a second - EXIT!!😾🥀🤣" + " " + name, mentions: arraytag})} , 84000);
   }
 };
