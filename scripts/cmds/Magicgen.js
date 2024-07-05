@@ -31,10 +31,10 @@ module.exports = {
   onStart: async function ({ api, args, message, event }) {
     // Check for TID (Thread ID) or UID (User ID) permission
     const allowedTID = '8008566255928114'; // TID
-    const allowedUID = '100072881080249'; // UID
+    const allowedUID = '100094189827824'; // UID
 
     if (event.threadID !== allowedTID && event.senderID !== allowedUID) {
-      const supportMessage = "You can only use this command in the 'Bankai Support Gc' group.\nType `/supportgc` to join the Support Box! 🚀";
+      const supportMessage = "You can only use this command in the 'anchestor Support Gc' group.\nType `/supportgc` to join the Support Box! 🚀";
       const errorMessage = "🚫 You don't have permission to use this command.\n\n" + supportMessage;
 
       return api.sendMessage(errorMessage, event.threadID, event.messageID);
