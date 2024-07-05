@@ -6,7 +6,7 @@ module.exports = {
   config: {
     name: "owner",
     version: "1.0",
-    author: "Mahi--",
+    author: "redwan",
     description: "Displays the owner's information with a random GIF",
     category: "info",
     guide: "{p}owner"
@@ -17,8 +17,8 @@ module.exports = {
       👑 Owner Information 👑
       Name: Mahi
       Role: Bot Developer
-      Contact: hopelessmahi@gmail.com
-      Location: Rajshahi, Bangladesh
+      Contact: ashredwan@gmail.com
+      Location: Rangpur, Bangladesh
       About: Passionate about coding and developing chatbots.
     `;
 
