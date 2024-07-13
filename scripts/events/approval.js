@@ -5,7 +5,7 @@ module.exports = {
   config: {
     name: "approval",
     version: "1.0",
-    author: "rehat--",
+    author: "Redwan",
     category: "events"
   },
   onStart: async function ({ api, event, threadsData, message }) {
@@ -20,22 +20,28 @@ module.exports = {
     try {
       threads = JSON.parse(fs.readFileSync('threads.json'));
     } catch (err) {
-      console.error('', err);
+      console.error('Error reading threads.json:', err);
     }
 
     if (!threads.includes(groupId) && event.logMessageType === "log:subscribe") {
+      // Send a warning message to the group
       await message.send({
-        body: `❎ | You Added The 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Without Permission !!\n\n✧Take Permission From 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Admin's to Use 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 In Your Group !!\n✧Join 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Support GC to Contact With Admin's !!\n\n✧Type ${p}supportgc within 20 seconds.\n\n- Ohio03 Co., Ltd.`,
+        body: `❎ | You added the 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 without permission!\n\n✧ Take permission from 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 admins to use 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 in your group.\n✧ Join 𝗔𝗡𝗖𝗛𝗘𝗦𝗧𝗢𝗥 𝗔𝗜 Support GC to contact with admins.\n\n✧ Type ${p}supportgc within 20 seconds.\n\n- Ohio03 Co., Ltd.`,
         attachment: await getStreamFromURL("https://i.ibb.co/2PQwZgf/image.gif")
       });
-    }
 
-    if (!threads.includes(groupId) && event.logMessageType === "log:subscribe") {
-      await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay of 1 seconds
+      // Countdown from 20 to 1
+      for (let i = 20; i > 0; i--) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await message.reply(`Countdown: ${i}`);
+      }
+
+      // Notify the specified user about the unauthorized addition
       await api.sendMessage(
-        `====== Approval ======\n\n🍁 | Group:- ${name}\n🆔 | TID:- ${groupId}\n☣️ | Event:- The Group Need Approval`,
+        `====== Approval ======\n\n🍁 | Group: ${name}\n🆔 | TID: ${groupId}\n☣️ | Event: The group needs approval.`,
         uid,
         async () => {
+          // Remove the bot from the group
           await api.removeUserFromGroup(api.getCurrentUserID(), groupId);
         }
       );
