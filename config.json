@@ -1,7 +1,7 @@
 {
 	"facebookAccount": {
-		"email": "covijad763@nestvia.com",
-		"password": "arafat1133",
+		"email": "waqfstatec@gmail.com",
+		"password": "@suku335na",
 		"2FASecret": "",
 		"i_user": "",
 		"proxy": null,
@@ -69,7 +69,7 @@
 		}
 	},
 	"autoRestart": {
-		"time": null,
+		"time": 900000,
 		"notes": "you can set time is interval with milisecond or cron time, example: 1000, 10000, 60000, 3600000, 86400000, 0 0 * * *,... docs: https://www.npmjs.com/package/node-cron. If you set time is 0 or false or null, the bot will not auto restart"
 	},
 	"autoUptime": {
