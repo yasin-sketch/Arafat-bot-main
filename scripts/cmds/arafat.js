@@ -4,22 +4,23 @@ const path = require('path');
 
 module.exports = {
   config: {
-    name: "owner",
+    name: "arafat",
     version: "1.0",
-    author: "redwan",
+    author: "👀ꪖ᥅ꪖᠻꪖꪻ🍼",
     description: "Displays the owner's information with a random GIF",
     category: "info",
-    guide: "{p}owner"
+    guide: "{p} owner"
   },
 
   onStart: async function ({ api, event }) {
     const ownerInfo = `
-      👑 Owner Information 👑
-      Name: Mahi
-      Role: Bot Developer
-      Contact: ashredwan@gmail.com
-      Location: Rangpur, Bangladesh
-      About: Passionate about coding and developing chatbots.
+      👑 🇴 🇼 🇳 🇪 🇷  👑
+      𝗡𝗮𝗺𝗲:𝐀𝐫𝐚𝐟𝐚𝐭 𝐘𝐚𝐬𝐢𝐧
+      𝗗𝗮𝘁𝗲 𝗼𝗳 𝗯𝗶𝗿𝘁𝗵:09 𝐀𝐮𝐠𝐮𝐬𝐭,2010
+      𝗦𝘁𝘂𝗱𝘆:𝐒𝐒𝐂 𝐂𝐚𝐧𝐝𝐢𝐝𝐚𝐭𝐞 2028
+      𝗚𝗲𝗻𝗱𝗲𝗿:𝐌𝐚𝐥𝐞
+      𝗔𝗱𝗱𝗿𝗲𝘀𝘀:𝐏𝐚𝐧𝐜𝐡𝐚𝐠𝐚𝐫𝐡,𝐑𝐚𝐧𝐠𝐩𝐮𝐫,𝐁𝐃
+      
     `;
 
     const gifs = [
